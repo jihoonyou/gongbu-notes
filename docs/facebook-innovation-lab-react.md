@@ -54,6 +54,7 @@ state
 npm run build??
 
 npm install -g serve
+
 youtube (react -9 배포하는 법 강의로 대체)
 
 network 탭에서 Empty Cache and Hard reload
@@ -214,3 +215,151 @@ call vs bind
 this.setState
 - why use setState? 이렇게 해야함
 - 이렇게 하지 않으면, react가 알지 못함 그래서 render()가 호출되지 않고 
+
+state props
+- 안의 Subject component가 부모 component 바깥을 바꾸려면, event handler를 사용하여 밖의 state를 바꾼다.
+- this.props.title 값을 바꾸려는 것 (어명을 거스르는 것) => error 이것을 허용하면 좋은 부품이 아니기 때문에..
+- 이것을 바꾸는 방법은 사용자가 이벤트 핸들러를 호출하여 안에서 바꾸게 하는 것.
+
+## day 5 - 04/26/19
+
+on이라는 것은 event가 발생하겠다라는 생각을 갖게하는 convention
+
+과학자 - 원리를 알아야 한다
+공학자 - 원리를 몰라도 해내는 것 
+
+preventDeafult() - 이거는 대게 위로 올리는 게 좋음 why? log가 사라지지 않음
+
+setState발생하여 바뀔시 render()가 실행이 됨.
+- 해당 state의 자식들이 다 바뀜..
+- 이러한 경우 부모 컴포넌트 밑에 있는 하위 컴포넌트들이 다 render()가 여러번 작동함.. react에서 이부분을 어떻게 설명했는지 추후에 해주시는듯.
+
+babel - 바벨탈 예시로 만들어진 거인듯? 탑을 쌓아 올려서... 별개의 언어체계로 흩으러 시킨 것.
+- 무조건 최신 언어가 좋은 건 아닌 듯?
+
+bind 복습
+- 원본을 바꾸지 않고 복제를 준다 하는 것 불변하다 immutable
+- bind는 실제로 인자도 묶어줌.
+```
+var p1 = {name: 'eoging'};
+function hi()  {
+    console.log(`hi, $(this.name)`);
+}
+var p1shi = hi.bind(p1);
+
+var p1 = {name: 'eoging'};
+function hi(endMark)  {
+    console.log(`hi, $(this.name) $(endMark)`);
+}
+var p1shi = hi.bind(p1, '!');
+
+
+var p1 = {name: 'eoging'};
+function hi(endMark, endMark2)  {
+    console.log(`hi, $(this.name) $(endMark) ---- $(endMark2)`);
+}
+var p1shi = hi.bind(p1, '!');
+p1shi('----');
+
+```
+'event handelr 함수의 첫 파라미터 값을 event로 넣겠다'
+- bind를 사용하여 event handler의 첫 파라미터 값을 바꾼다.
+```
+onClick={
+          function(id, event) {
+            event.preventDefault();
+            this.props.onChangePage(id);
+          }.bind(this, con[i].id)
+```
+함수화 - 부품화 - 컴포넌트화 (자주 쓰이는 것들 )
+
+tag가 여러개인 것들은 key 값을 통해서 각각의 태그를 구분해주는 key값이 필요하다
+
+바깥 쪽에 있는 컴포넌트의 state값을 바꾸려면 function을 props로 내려서, 바꿔야 하는듯.?
+
+fucntion내에서는 bind(this)가 해당 component에 묶어주는듯.
+
+debugger
+- step into
+ - 안으로 들어가는거
+- step out
+ - 한 줄씩 실행하는 거.
+
+event bubbling
+- 
+
+react는 부모에서 자식으로 가는 것은 쉬움 (props)
+- 하지만 component depth가 깊어지고 component가 많아지면 다루기 힘들어짐
+
+Redux
+- 단일한 지식의 원천, props를 data를 한 곳에 모아두고.. 연결 시키는 것?
+- counter vanilla 눌러서 확인 하신듯?
+- **Redux dev Tool** 이거 완전 짱인듯
+ - data하나가 바뀔때마다 data 각 값이 version 관리가 됨.
+ - 문제의 debugging값을 실시간으로 보여주는듯. 
+ - debugger는 최종적인 상태를 보여주는 툴이지만, 각 버전에서의 상태에서의 전체적인 snapshot을 보여줌..
+
+```
+var store = Redux.createStore(counter)
+```
+
+CRUD - create, read, update, delete
+- update, create => page에서 하는 거 그래서 a tag가능
+- operation 할 때는 link 쓰면 안됨
+
+import ____ from './'
+ - ____를 defline하여 중복된 class이름을 방지할 수 있음
+
+export default를 하면 바깥쪽에서 안의 변수를 접근을 못하게 할 수 있음!
+
+event.target.___ - ___ name값
+
+불필요하게 변수를 선언할 떄 state의 넣으면 rendering을 사용하기 떄문에 불필요한 일이 발생.
+
+reloading > website 전체가 새로 그리는 것
+
+react의 virtualDOM
+- 부분 랜더링을 가능하게 함.
+- 가상의 돔을 바꾸고, realDOM과 비교해서 바뀐 부분만 부분 렌더링 하는 듯.
+
+virtualDOM의 최적화
+- render -> SCU -> virtualDOM -> realDOM
+- shouldComponentUpdate default true값을 prevState값과 비교해서 좀 더 비교해서
+
+불필요한 render를 막는 법 
+- shouldComponentUpdate를 사용!
+- react에서는 이전 props값과 이전 state값을 해당 prevProps,prevState 인자로 전달함
+- state값을 바꿀 때 원본을 바꾸면 안된다.
+
+immutable vs mutable
+- 이것이 mutable인지, immutable인지 알려면.. return 값이 있는건지, 아니면 원래를 바꾸는 것
+
+```
+var a = [1,2];
+a.push(3);
+//a = [1,2,3]
+```
+- this is mutable, 원본을 바꾸는 것 - 원본이 mutate하는 것
+```
+var a = [1,2];
+var b = a.concat(3);
+// a = [1,2]; b = [1,2,3];
+```
+- 복제하는 것 - 원본이 immutable하는 것
+그냥 쉬운방법은 무조건 복사해서 쓰는 것 
+array
+```
+var a = [1,2]
+var b = Array.from(a);
+
+```
+객체
+```
+var obj = {name: 'egoing'};
+var ojb2 = Object.assign({} ,obj);
+
+```
+
+immutable.js
+- map 객체라고 생각하시길 하지만 객체는 아님
+- list는 array라고 생각 하시길
