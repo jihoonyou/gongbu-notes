@@ -133,4 +133,6 @@ Using Fetch
 you may use XMLHttpRequest API or Websocket.
 
 
+
+나중에 다시 참고
 [resource][https://www.slideshare.net/deview/121react-native]
