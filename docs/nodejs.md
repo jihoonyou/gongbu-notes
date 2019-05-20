@@ -56,3 +56,62 @@ onRequest 함수가 호출될 때 두 개의 파라미터가 넘어온다 reques
 모듈화를 통해 server.js를 nodejs의 모듈로 만들어서 index.js main파일에서 사용하기 가능.
 var http = require("http");
 - Node.js 내부 어딘가에 "http"라는 모듈이 있으며, 이를 require하고 지역변수에 할당하여 사용하는 것!
+- 이렇게 하면 지역변수가 http 모듈이 제공하는 모든 public 메소드를 사용할 수 있는 객체가 됩니다.
+
+routing - 다른 HTTP 요청이 코드의 다른 부분을 가리키도록 하는 것
+
+```
+function route(pathname) {
+  console.log("About to route a request for " + pathname);
+}
+
+exports.route = route;
+```
+- router.js 모듈화
+
+```
+var http = require("http");
+var url = require("url");
+
+function start(route) {
+  function onRequest(request, response) {
+    var pathname = url.parse(request.url).pathname;
+    console.log("Request for " + pathname + " received.");
+
+    route(pathname);
+
+    response.writeHead(200, {"Content-Type": "text/plain"});
+    response.write("Hello World");
+    response.end();
+  }
+
+  http.createServer(onRequest).listen(8888);
+  console.log("Server has started.");
+}
+
+exports.start = start;
+```
+- router 함수를 파라미터로 넘길 수 있도록 server의 start() 함수를 확장
+
+```
+var server = require("./server");
+var router = require("./router");
+
+server.start(router.route);
+```
+- index.js를 확장합니다. 여기서 router 함수를 server로 주사(inject) 합니다. [depenecy injection](https://martinfowler.com/articles/injection.html)
+
+blocking vs non-blocking
+blocking
+- node에서는 모든 게 병렬로 수행된다. 당신 code만 빼고.
+Node.js는 다수의 동시작업을 처리할 수 있지만 thread를 나누는 방식으로 하지 않습니다. 사실 Node.js는 단일 thread입니다.
+- 대신, Node.js는 동시작업을 event loop을 실행해서 처리하며 개발자들은 이것을 사용할 수 있습니다. 우리는 blocking 동작을 피하고 non-blocking 동작을 사용해야만 합니다.
+- callback 합수를 다른 함수에게 넘겨야 합니다.
+
+"child_process" 모듈을 사용하여 함.
+- exec() 커멘드를 통해 shell커멘드를 Node.js안에서 실행
+- 책의 예제에서의 exec()을 비동기적으로 처리하기 위해서는 exec()의 두번째 파라미터의 callback 함수를 사용해야한다.
+
+하나의 해결책
+- 현재 우리 애플리케이션은 사용자에게 보여주고 싶은 content를 request handler에서 HTTP server로 전달할 수 있습니다. 다음과 같은 여러 애플리케이션 레이어들을 거쳐 넘기는 식으로 식으로 말입니다. (request handler -> router -> server)
+- 새로운 접근 방법은 다음과 같습니다: content를 server로 보내는 대신 server를 content로 보낼겁니다. 좀 더 자세히 이야기 하면, response 객체 (server의 callback 함수인 onRequest() 에서 얻은)를 router를 통해 request handler에게 주사(inject) 합니다. 이제 handler는 이 객체가 가진 함수들을 이용해서 스스로 요청에 응답할 수 있게 되었습니다.
