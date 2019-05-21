@@ -2,7 +2,8 @@
 
 ## 공부순서
 ~~[nodeschool](https://nodeschool.io/ko/about.html)~~
-[] [theNodeBeginnerBook](https://www.nodebeginner.org/index-kr.html)
+[x] [theNodeBeginnerBook](https://www.nodebeginner.org/index-kr.html)
+[x] [인프런 nodejs](https://www.inflearn.com/course/node-js-%EC%9B%B9%EA%B0%9C%EB%B0%9C#description)
 [] [생활코딩](https://opentutorials.org/course/3332)
 [] [커리큘럼확인하여 부족한 거 찾기](https://www.fastcampus.co.kr/dev_camp_nodejs/)
 
@@ -115,3 +116,71 @@ Node.js는 다수의 동시작업을 처리할 수 있지만 thread를 나누는
 하나의 해결책
 - 현재 우리 애플리케이션은 사용자에게 보여주고 싶은 content를 request handler에서 HTTP server로 전달할 수 있습니다. 다음과 같은 여러 애플리케이션 레이어들을 거쳐 넘기는 식으로 식으로 말입니다. (request handler -> router -> server)
 - 새로운 접근 방법은 다음과 같습니다: content를 server로 보내는 대신 server를 content로 보낼겁니다. 좀 더 자세히 이야기 하면, response 객체 (server의 callback 함수인 onRequest() 에서 얻은)를 router를 통해 request handler에게 주사(inject) 합니다. 이제 handler는 이 객체가 가진 함수들을 이용해서 스스로 요청에 응답할 수 있게 되었습니다.
+
+## Node.js 웹개발로 알아보는 백엔드 자바스크립트의 이해
+JavaScript를 통한 풀스텍 개발
+
+npm init
+- package.json이 생김
+
+비동기로 동작하는 콜백함수.
+
+nodemon을 사용하여 편하게.
+- 변화에 자동으로 적용됨.
+
+__dirname
+- 최상위 루트를 나타냄 (노드에서 제공해주는 식별자)
+
+var app = express()
+
+```
+app.get('/', function(req,res) {
+  res.send("<h1>hello</h1>")
+});
+```
+
+```
+app.use(express.static('public'))
+```
+static file처리 (public에 static한 파일이 있을 경우)
+
+post방식
+- 보통 서버에 데이터를 보낼 때 사용.
+- get방식은 url에 보내는 데이터가 url에 담김
+
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: true}))
+- express 서버에 바디파서를 쓴다고 알려줘야 함.
+- client와 server사이의 데이터를 보낼 때 인코딩이 필요.
+
+var bodyParser = require('body-parser')
+- post의 경우 body-parser를 통해서 받을 수 있음.
+
+```
+
+app.post('/email_post', function(req,res) {
+  //get : req.param('email)
+  console.log(req.body.email)
+  res.send("<h1>welcome " + req.body.email + "</h1>")
+})
+```
+routing을 모듈화 하여 app.js를 좀 더 가볍게 만들 수 있음.
+
+query문 날릴 때, set사용해서 좀 더 깔끔하게 코드를 넘길 수 있음.
+
+session
+- 사용자가 로그인을 했을 때 서버에서 로그인정보를 메모리/DB에 어떤 ID값을 만들어서 저장하는 것
+- 로그인했다는 상태값을 저장하여, 로그인 유무에 따라 다른 정보를 보여줌.
+- 최근에는 상태값을 저장하지 않는 token값으로 로그인관리를 하기도 함
+
+npm install passport passport-local express-session connect-flash --save-dev
+- passport 인증관련 모듈 처리
+- passport-local 페이스북, 구글 로그인 말고 일반적인 로그인 처리 (local db에 관리)
+- express-session 세션관리 처리
+- connect-flash 에러 메시지를 redirect해서 관리하는 것
+
+passport.js 사이트를 참고하여, 필요한거 공부 (middleware)
+
+로그인 구현시
+- custom callback을 사용해야하는듯
