@@ -162,4 +162,110 @@ SDK (Software Development Kit)
 API (Application Programming Interface)
 - 예시에서는 웹을 통한 Rest API를 사용
 
+##  EC2 AWS Marketplace
+OS선택할 때, 실제로는 AMI로 아마존에서 만든 이미지.
+- 다양한 이미지를 선택하여 해당 서비스를 pre-install된 환경에서 사용 가능
 
+## EC2 Scalability - Scale Up
+Scalability (변화하는 수요에 가용성을 변동시킴)
+- 클라우드 컴퓨팅을 사용하여 사용자의 증가에 따라 빠르게 대응이 가능! (비용효율적)
+- 하지만, 가상위에서 하는 거기때문에, 거기서 오는 기능저하 및 비용이 든다 
+- 스타트업
+ - 저렴한 컴퓨터사용 가능
+ - nano로 수용가능
+- 큰회사
+ - 강력한 컴퓨터 사용
+- 물리적인 컴퓨터가 해당 컴퓨터들을 생성해줌
+- Scalabilty를 적용하는 두 가지 전략이 있음 Scale in, Scale up
+
+Scale up
+- 서버 그 자체를 증강하는 것에 의해서 처리 능력을 향상시키는 것
+- 하나의 컴퓨터를 더 좋은 컴퓨터로 교체하는 것을 의미
+- 수요에 따라 어떻게 탄력적으로 반응하는지
+- top => CPU 점유율 확인
+
+인스턴스 테스트 결과
+- 동시접속자가 늘어나면, 개별처리속도가 느려짐
+ - 즉 scale up이 필요한 상황이 생김
+
+instance를 이미지화 시키고, 더 좋은 instance로 바꾸는 작업.
+- stop을 시키고, instance를 다시 start하면 ip와 domain이 달라짐
+- scale up을 하려면, 인스턴스의 상태를 freezing해서 image로 만들어야함
+- Elastic ip - ip address를 아마존에서 받아서, 소유하는 것 (유료)
+ - Release address로 삭제
+ - Associate address로 ip를 부여할 인스턴스를 선택할 수 있음
+
+인스턴스 교체
+- create image
+ - 해당 작업을 하면 인스턴스가 꺼짐. 그러므로 주의해야함.
+ - AMI에 이미지가 만들어짐
+  - 해당 이미지에 오른쪽 클릭 후, launch를 눌러서 인스턴스를 골라야 한다.
+scale out은 scale up보다 좀 복잡해짐
+- scale out은 적당한 규모가 되었을 때 고민 하는 것
+
+## EC2 Scalability - Scale Out (ELB)
+scale up - 수요에 따라서 더 좋은 컴퓨터로 업그레이드 하는 것.
+- 단일 컴퓨터의 성능의 한계가 생길 수 있음.
+scale out - 여러 컴퓨터를 연결하여 성능 향상.
+- 복잡해짐.. 
+
+Scale out의 흐름
+- Web Server -> Middleware -> Database
+- nginx,apache -> php,jsp,django-> mysql,nosql
+- shadding등 데이터베이스, 미들웨어, 웹서버 등을 컴퓨터로 나눠서 여러 컴퓨터가 일처리를 하게 만듦
+- 미들웨어 부분이 느려지면, 미들웨어 부분을 나눔.
+- 웹서버의 과부화처리
+ - DNS의 설정을 바꿔서, 서버를 나눠서 들어감.
+ - load balancer를 써서, 웹 서버로 분산되게 함 => AWS에서는 ELB라고 불림
+
+## ELB (Elastic Load Balancer)
+Load Balancers 왼쪽 탭에서 Create Load Balancer
+- ELB를 만들고, 기존의 인스턴스에 붙인다
+앞단만 HTTPS/HTTP 설정하고 인스턴스는 그냥 HTTP로 통신해서 자원을 아낀다
+
+Configure Health Check
+- load balancer가 각각의 인스턴스에 사용자들의 요청을 분산해주는데, 특정 컴퓨터가 죽었는지 정기적으로 확인
+- HTTP방식으로 80포트로 index.html로 접속했을 떄 해당 파일에 접속하지 못한다면, ELB는 해당 서버가 죽었구나 확인할 수 있음
+- Advanced Details
+ - response timeout 5 sec => 5초이상 걸리면 건강하지 않는다
+ - Health Check Interval 30 sec => 30초마다 Health check를 하겠다
+ - Unhealthy Threshold 2 => 위의 조건을 2번 충족못하면 죽었다고 생각하겠다
+ - Healthy Threshold 10 => 죽어있는 상태에서 10번 시도해서 되면 살았다고 생각하겠다.
+- Add EC2 Instances
+ - 열어놓은 인스턴스를 선택
+
+ELB적용
+- Edit instance
+인스턴스를 수동으로 늘렸다 줄이는 작업을 자동화하는 것이 auto-scaling
+- ELB와 Auto-scaling을 같이하면 훨씬 강력해짐
+
+ELB사용시 주의사항
+- db가 다르면, 다른 화면이 보이게 되는 것을 주의
+ - 그래서 DB를 분산하지 않는 예시를 보여줌 하지만 RDB 파트에서 DB 나누는 방법을 보여줄듯
+
+## EC2 Scalability - Auto Scaling
+필요에따라 자동으로 컴퓨터를 생성해서 컴퓨터를 시작했다가, 사용도가 떨어지면 자동으로 컴퓨터를 삭제하는 것
+
+Launch Configurations
+- 이미지를 인스턴스로 만드는 설정
+ - my AMIS에서 생성한 이미지를 선택
+ - 자동으로 인스턴스를 만들 때 어떤 이미지를 기반으로 만들지 정의
+ 
+Auto Scaling Groups
+- 언제 어떤 조건에서 만들것이냐
+- Advanced Details
+ - 자동으로 인스턴스에 자동으로 붙이는 방법
+- Desired
+ - 필요로 하는 인스턴스 숫자
+- Instnaces
+ - 현 인스턴스 숫자
+- 어떤 인스턴스가 삭제될지 모름
+  - 사용하고 버리는 느낌의 인스턴스 
+
+Cloudwatch
+- AWS에서 사용하고 있는 것을 확인할 수 있음.
+
+SNS home
+- Topics에서 삭제해야된다.
+- Subscription부분도 삭제. 
+ELB도 삭제
