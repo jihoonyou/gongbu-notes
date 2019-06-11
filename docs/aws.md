@@ -269,3 +269,53 @@ SNS home
 - Topics에서 삭제해야된다.
 - Subscription부분도 삭제. 
 ELB도 삭제
+
+## nodejs를 위한 AWS SDK
+aws sdk for javscript in node.js를 검색
+- 개발자 안내
+ - npm install aws-sdk --save
+ - var AWS = require('aws-sdk');
+- configuring the SDK in Node.js
+ 1. AWS.config
+  - 모든 서비스에 적용되는 글로벌하게 configuration 적용
+  - 
+ 2. passing extra configuration to s service object
+  - 각각의 세부적인 설정
+  - ex) S3는 서울 dynamo DB는 미국
+
+Setting AWS Credentials
+- 증명, 인증..
+- 5가지의 증명 방법
+ 1. Loaded from IAM roles for Amazon EC2
+  - NodeJS 애플리케이션이 EC2위에서 동작하는 상황이라면.. 가장 권장되는 방법? role을 설정 ID나 PW없이 crendential
+ 2. (~/./aws/credentials) 홈 디렉토리에 다음과 같이 정의하면, sdk동작할때 해당 파일이 있는지 확인하고 동작
+ 3. 환경변수 이용
+ 4. JSON파일을 따로 만들어서 이용
+ 5. 코드를 직접 하드코딩하는 방법
+
+IAM => security&identity => users => 새로운 사용자 추가
+- 새로운 id, key값 얻기
+- 해당 id,key값을 잘 관리해야 한다.
+
+common examples
+- 여러 사례(예시)를 보고 실습.
+api docs에서 어떻게 사용하는지 확인 (EC2사용법 등..)
+에러를 console에 찍어서 확인.
+
+user =>  permission  =>  attach policy
+- AmazonEC2FullAccess 선택
+
+## AWS S3
+파일서버 서비스인 S3(Simple Storage Serivce)
+
+S3 콘솔을 통한 기본 조작 방법
+S3 -> Create Bucket
+- 저장장치 생성
+- 해당 버킷을 선택하여 어떤 파일이 있는지 확인 가능
+- upload버튼으로 업로드 가능
+ - 해당 파일을 클릭하면 보이는 링크를 통해 해당 파일에 접근가능
+- 상대가 파일을 업로드하는 작업 등을 S3에 저장
+
+Simple Storage Service
+- 파일을 저장하는 서비스
+- 객체 내구성(유실될 가능성)이 뛰어남 => 안전하다
