@@ -319,3 +319,69 @@ S3 -> Create Bucket
 Simple Storage Service
 - 파일을 저장하는 서비스
 - 객체 내구성(유실될 가능성)이 뛰어남 => 안전하다
+
+
+## Nodejs를 위한 S3 SDK
+--todo--
+
+
+## AWS RDS
+RDS는 Relational Database Service의 약자로 관계형 데이터베이스를 서비스로서 제공하는 제품입니다. MySQL, MariaDB, PostgreSQL, SQL Server, ORACLE 등을 직접 운영하지 않고 AWS에 대행할 수 있습니다. 
+
+## RDS 소개
+관계형 데이터 베이스
+- MySQL
+- MariaDB
+ - MySQL과 호환가능
+- Aurora
+- PostgreSQL
+- Oracle
+- SQL Server
+
+## RDS 데이터베이스 서버 생성
+Production
+- Multi-AZ(Availability Zone)
+ - 서로 다른 데이터센터에 안전하게 저장 (하지만 비쌈)
+DevZone
+
+Master Username * Master Password
+- 해당 DB에 접근할때 사용하는 암호 설정
+
+Configure Advanced Settings
+- VPC no하면 같은 VPC안에서만 접속 가능
+- VPC Securit Groups 누가 서버에 접속할 수 있게 할꺼냐.
+
+Backup
+- 몇일까지 backup을 할껀가 => 다시 돌아갈 수 있음
+- Backup windows => 언제 백업을 할껀지
+
+Maintenance
+- Auto Minor Version Upgrade
+ - 소소한 버전 업그레이드를 자동으로
+
+## RDS 백업 & 복원
+안정성이 중요
+다중가용은 속도향상이 아닌 안정성향상
+
+take snapshot
+- 현재 DB상태를 저장
+- 복원할 snapshot을 선택하고, resotre snapshot 선택
+ - 인스턴스를 지우고 복원하는게 아닌, 새로운 인스턴스를 생성하고 복원
+
+스냅샷외의 복원
+- Restore to point in time
+
+## RDS Scale up & out
+RDS DB instance click -> instance action -> modify
+
+master computer를 두고 몇 개의 slave컴퓨터를 갖음
+slave들이 마스터의 데이터를 빠르게 가져옴
+- 쓰기는 master database만 처리되고
+- 읽기는 slave들에서만 처리됨
+- 읽기와 쓰기 처리를 나눔
+쓰기의 master는 샤딩을 이용해서 늘림
+- 1~20번은 이것 21~40번은 이것.. 이런거
+
+slave는
+- create read replica로 생성
+- read replica source => 마스터 데이터 베이스 선캑
