@@ -1,7 +1,7 @@
 # redux
 
 ## 공부자료
-[] [생활코딩](https://www.opentutorials.org/module/4078)
+[x] [생활코딩](https://www.opentutorials.org/module/4078)
 
 ## 수업소개
 Redux - A predictable state container for JavaScript apps
@@ -18,6 +18,8 @@ undo, redo를 쉽게 할 수 있음
 - 원본을 바꾸는 것이 아니라, 원본을 복제하고 사는 것
 - 현재 상태 뿐만 아니라, 과거 여러 시점을 볼 수 있음
 - module reloading -> 우리가 작성한 코드가 자동으로 적용되는 것 (hot module reloading)
+
+![redux_map](./images/reduxmap.png)
 
 ## state와 render의 관계
 redux의 핵심은 store(은행이라고 비유)
@@ -118,3 +120,11 @@ redux dev tools
 - store에 전달된 action들을 version관리 함.
 redux는 단일 스토어
 [redux 이슈 해결](https://writingdeveloper.tistory.com/305)
+
+## 실전 Redux
+Store를 만들어야함.
+
+
+reducer가 있어야함 -> 이전의 state와 해당 redcuer가 호출된 action을 갔는다. return new state. 최초 1회 reducer를 호출 할 때, state 값이 undefined면, 초기 값에 해당하는 값을 넣어준다.
+
+store의 state값 변경, action이라는 것을 발생시키고, 그 action이 dispatch를 통해서 reducer를 실행시키면 reducer가 state에 새로운 값을 뱉어준다. 그리고, state의 값이 바뀌면, subscribe하고 있는 함수들을 호출해줌을 통해서 UI가 업데이트된다.
