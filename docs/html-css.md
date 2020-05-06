@@ -105,3 +105,34 @@ css color
 class can be attributed to as many element as you want -> .
 id can be attributed to only once to each element      -> #
 - using id is not a good practice so try to use class
+
+The CSS box model
+- Content: text, images, etc.
+- Padding: transparent area around the conten, inside of the box
+- Border: goes around the padding and the content
+- Margin: space between boxes
+
+Block element - use the full width of the broweser and force line breaks.
+- ex) heading and paragraphs
+Inline element - don't do any of that
+- ex) images, links, strong, em element
+
+```
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+```
+이 웹페이지의 모든 엘리먼트의 사이즈에 width와 height를 border-box로 
+-> default로는 content-box로 되어있음 (border를 제외한 속.)
+
+margin auto means -> the elft and right margin are adjusted automatically according to the context of the element.
+
+
+Relative vs. Absolute
+- Before do anything, we have to ensure parent element is relatve-positioned element.
+
+
+
+
