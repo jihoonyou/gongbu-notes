@@ -3,7 +3,7 @@
 ## 공부자료
 [x] [생활코딩-DB1](https://opentutorials.org/course/3162)
 
-[x] [생활코딩-DB2](https://www.opentutorials.org/module/4078)
+[x] [생활코딩-DB2](https://opentutorials.org/course/3161)
 
 [x] [생활코딩-SQL Join](https://opentutorials.org/course/3884)
 
