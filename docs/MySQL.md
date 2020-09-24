@@ -9,49 +9,79 @@
 
 [x] [프로그래머스-MySQL](https://programmers.co.kr/learn/challenges)
 
-[x]  [생활코딩-Relational data modeling](https://www.youtube.com/playlist?list=PLuHgQVnccGMDF6rHsY9qMuJMd295Yk4sa)
+[x]  [생활코딩-Relational data modeling](https://opentutorials.org/course/3883)
+
+
 ## 데이터베이스의 목적
 관계형 데이터베이스 -> 표의 형태로 표현
 - spreadsheet랑 비슷함.
 
+스프레드시트와 관계혀 데이터베이스의 차이점
+- 클릭 vs 명령어
+
+
 ## 설치 및 작동
-mysql community edition download>MySQL Community Server>DMG archive
-cd /usr/local/mysql/bin
-./mysql -uroot -p 
+다운로드
+- mysql community edition download>MySQL Community Server>DMG archive
+
+터미널에서 사용시
+- cd /usr/local/mysql/bin
+
+mysql 서버 접속
+- ./mysql -uroot -p 
+
 
 ## MySQL의 구조
 표(table)
-database - 표들을 grouping (schema)
-- 연관된 데이터를 grouping
-데이터베이스 서버에 저장
+- 데이터를 기록하는 곳
+- ex) 글을 저장하는 표, 댓글을 저장하는 표
 
+database - 표들을 grouping (schema)
+- 표가 많아진다면..
+- 연관된 데이터를 grouping
+- schema -> 표를 그룹힐할 때 사용하는 폴더
+  - schema는 서로 연관된 데이터를 그룹핑 해준다.
+
+데이터베이스 서버에 저장
+- 스키마들을 저장
+- mysql의 설치 -> 데이터베이스 서버라는 것을 설치 한 것
 database server > database, schema, > table
 
+
 ## 서버 접속
-./mysql u___ 
+권한등록가능
+- 차등적으로 권한을 줄 수 있음
+./mysql u___ -p
 - u___ 사용자
+  - ex) -ujihoon
 - uroot 관리자
+
 
 ## 스키마의 사용
 schema(database) 만들기
 - CREATE DATABASE opentutorials;
 
 delete database
-- DROP DATEBASE opentutorials;
+- DROP DATABASE opentutorials;
 
 - SHOW DATABASES;
 
 USE opentutorials;
 - mysql은 지금부터 opentutorials에있는 schema를 표를 대상으로 명령을 실행
 
+
 ## SQL과 테이블의 구조
 SQL - Structured Query Language
-row,record - data 자체
-column - data의 타입
+- 언어
+Query - 데이터베이스에게 질의
+row, record, 행 - data 자체
+column, 열 - data의 타입(구조)
+
 
 ## 테이블의 생성
-create table in mysql cheat sheet
-type을 지정할 때 최대값에 가까운것을 선택
+create table in mysql cheat sheet -> 검색
+[type을 지정할 때 최대값에 가까운것을 선택](https://www.techonthenet.com/mysql/datatypes.php)
+- 항상 가장 큰 거를 사용하면 안됨 -> 저장 공간을 많이 차지하기 때문
 
 - CREATE TABLE topic(
     id INT(11) NOT NULL AUTO_INCREMENT,
@@ -84,15 +114,18 @@ PRIMARY KEY
 
 SHOW TABLES;
 
+SET PASSWORD = PASSWORD('____');
+
+
 ## CRUD
 Create
 Read
 Update
 Delete
 
+
 ## INSERT
 INSERT INTO tablename (v1,v2,v3,...)
-
 
 DESC topic;
 - 테이블 구조 확인
@@ -104,10 +137,11 @@ ex)
 SELECT * FROM topic;
 
 ## SELECT
-모든 정보
+모든 정보 출력
 - SELECT * FROM topic;
 
-*mysql SELECT syntax*
+[*mysql SELECT syntax*](https://dev.mysql.com/doc/refman/5.7/en/select.html)
+- 대괄호 생략가능
 
 SELECT id,title,created,author FROM topic;
 
@@ -122,28 +156,29 @@ SELECT id,title,created,author FROM topic WHERE author='jihoon' ORDER BY id DESC
 ## UPDATE
 UPDATE topic SET description='Oracle is ...', title='Oracle' WHERE id=2;
 
+
 ## DELETE
 DELETE FROM topic WHERE id = 5;
 
-## 관계형데이터베이스의 필요성
-- 중복 데이터의 관리.
-- 그리고 그 각각의 데이터들의 용량이 크다면..
-- 유지보수가 용이
 
-테이블의 분리 tradeoff
-- 해당 행의 표를 비교하면서 봐야함.
+## 관계형데이터베이스의 필요성
+중복 데이터의 관리
+- 개선이 필요하다
+- 유지보수가 용이
+- 각각의 데이터들의 용량이 크다면..
+- 같은 이름, 같은 프로필이지만 id가 다르게 관리 가능
+
+중복 데이터를 해결하는 방법
+- 테이블의 분리
+  -  단점(tradeoff) -> 해당 행의 표를 비교하면서 봐야함.
 
 꿈 
-- 중복을 발생하지 않으면서 하나의 표로 합쳐진 데이터를 보는 것
-데이터를 분산시키지만,합쳐서 보여준다
-
+- 데이터를 별도의 테이블로 보관하면서 중복을 발생시키지 않으면서 실제로 데이터를 볼 때,하나의 표로 합쳐진 데이터를 보는 것
+- 데이터를 분산시키지만,합쳐서 보여준다 (저장은 분산, 데이터는 합쳐서) 
 
 
 ## 테이블 분리하기
 RENAME TABLE topic TO topic_backup;
-
-
-
 
 
 ```
@@ -163,7 +198,7 @@ CREATE TABLE `author` (
 -- Dumping data for table `author`
 --
  
-INSERT INTO `author` VALUES (1,'egoing','developer');
+INSERT INTO `author` VALUES (1,'jihoon','developer');
 INSERT INTO `author` VALUES (2,'duru','database administrator');
 INSERT INTO `author` VALUES (3,'taeho','data scientist, developer');
  
@@ -192,7 +227,7 @@ INSERT INTO `topic` VALUES (5,'MongoDB','MongoDB is ...','2018-01-30 12:31:03',1
 ```
 
 ## JOIN
-테이블을 읽을 때 하나의 테이블로 저장되어진 것처럼 보이게 만들 수 있다
+분리된 테이블을 읽을 때 하나의 테이블로 저장되어진 것처럼 보이게 만들 수 있다
 
 SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.id;
 
@@ -200,31 +235,51 @@ SELECT topic.id, title, description, created,name, profile FROM topic LEFT JOIN 
 
 SELECT topic.id AS topic_id, title, description, created,name, profile FROM topic LEFT JOIN author ON topic.author_id = author.id;
 
-중복을 제거하는 것.
-
 SELECT * FROM comment LEFT JOIN author ON comment.author_id = author.id;
 SELECT comment.id, description, name, profile FROM comment LEFT JOIN author ON comment.author_id = author.id;
 
+
 ## 인터넷과 데이터베이스
 database client를 통해 database server에 접속
+
+ndatabase client
 - 기존 강의에서는 mysql monitor
 - MySQL workbench (GUI)
 
+
 ## MySQL Workbench
 ./mysql -uroot -p -h127.0.0.1
+- -hlocalhost -h127.0.0.1
 
 -h
 -> facebook.com, google.com...
 
 
 ## further study
-SQL, Index, modeling, backup, cloud
+SQL
+- SELECT문에 대한 공부
+
+Index
+- 데이터가 엄청나게 많아질 때, 정리가 필요
+- 사용자가 자주 쓰는 column에 색인을 건다
+  - 빠르게 데이터를 처리할 수 있음 (성능상의 문제가 생길시 찾아볼 것)
+
+modeling
+- 데이터베이스의 설게
 
 backup
-- mysqldmup, binary log
+- 데이터를 복제해서 보관(독립된 공간에 보관)
+- 검색 키워드 mysqldmup, binary log
+
+cloud
+- 클라우드 컴퓨팅
 
 
 # JOIN - part 2
+여러개의 표로 분산된 정보를 결합하여 하나의 단일한 표로 만드는 것
+
+[sql_join 연습장](http://bit.ly/join-exec)
+
 https://sql-joins.leopard.in.ua/
 
 https://docs.google.com/spreadsheets/d/1YN8mcTatO_X-azuSF5cjRUxfnyIcz-4q1IQVbn7I-k8/edit#gid=1849152573
@@ -237,19 +292,29 @@ LEFT OUTER JOIN
 RIGHT OUTER JOIN
 - 동작 방법은 같지만 방향만 달라진 것.
 
+
 INNER JOIN
 - NULL 행이 존재하지 않음
 - 일반적으로 성능이 더 좋음.
 - 양쪽 모두에 있는 "행"
 
+
 FULL OUTER JOIN
 - 양 쪽에 있는 것 도 포함
 - 합집합
 - LEFT JOIN하고 RIGHT JOIN 그리고 중복 삭제
+  - UNION에 중복을지우는 DISTINCT 키워드가 생략되어 있음
 - 왼쪽에 있는 것과 오른쪽에 같이 있는 것 나오고, 그 다음에 각자 있는 것 조인
+예시 
+- SELECT * FROM topic FULL OUTER JOIN author ON topic.author_id = author.id
+- outer join을 제공하지 않을 경우
+  - (SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.aid) UNION DISTINCT (SELECT * FROM topic RIGHT JOIN author ON topic.author_id = author.aid)
+
 
 EXCLUSIVE JOIN
 - A에만 존재하는 것을 찾아내는 것
+예시
+- SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.aid WHERE author.aid is NULL;
 
 주의점: JOIN에서 병목현상이 일어날 수 있다.
 
