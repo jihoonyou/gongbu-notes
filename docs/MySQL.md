@@ -83,7 +83,7 @@ create table in mysql cheat sheet -> 검색
 [type을 지정할 때 최대값에 가까운것을 선택](https://www.techonthenet.com/mysql/datatypes.php)
 - 항상 가장 큰 거를 사용하면 안됨 -> 저장 공간을 많이 차지하기 때문
 
-- CREATE TABLE topic(
+- ``` CREATE TABLE topic(
     id INT(11) NOT NULL AUTO_INCREMENT,
     title VARCHAR(100) NOT NULL,
     description TEXT NULL,
@@ -92,6 +92,8 @@ create table in mysql cheat sheet -> 검색
     profile VARCHAR(100) NULL,
     PRIMARY KEY(id)
 );
+    ```
+
 
 (__)
 - 보여지는 글자 수
@@ -185,27 +187,27 @@ RENAME TABLE topic TO topic_backup;
 --
 -- Table structure for table `author`
 --
- 
- 
+
+
 CREATE TABLE `author` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(20) NOT NULL,
   `profile` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
- 
+
 --
 -- Dumping data for table `author`
 --
- 
+
 INSERT INTO `author` VALUES (1,'jihoon','developer');
 INSERT INTO `author` VALUES (2,'duru','database administrator');
 INSERT INTO `author` VALUES (3,'taeho','data scientist, developer');
- 
+
 --
 -- Table structure for table `topic`
 --
- 
+
 CREATE TABLE `topic` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(30) NOT NULL,
@@ -214,11 +216,11 @@ CREATE TABLE `topic` (
   `author_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 );
- 
+
 --
 -- Dumping data for table `topic`
 --
- 
+
 INSERT INTO `topic` VALUES (1,'MySQL','MySQL is...','2018-01-01 12:10:11',1);
 INSERT INTO `topic` VALUES (2,'Oracle','Oracle is ...','2018-01-03 13:01:10',1);
 INSERT INTO `topic` VALUES (3,'SQL Server','SQL Server is ...','2018-01-20 11:01:10',2);
@@ -317,6 +319,7 @@ EXCLUSIVE JOIN
 - SELECT * FROM topic LEFT JOIN author ON topic.author_id = author.aid WHERE author.aid is NULL;
 
 주의점: JOIN에서 병목현상이 일어날 수 있다.
+- explian 쿼리문 키워드를 앞에 붙여서 병목 지점을 찾아 볼 수 있음
 
 
 # Relational data modeling
@@ -327,93 +330,103 @@ Model - 어떤 목적을 가지고 진짜를 모방하는 것 (좋은 모델 = �
 data modeling <- 누구든 데이터를 닮을 수 있는 방법을 모안
 - 복잡한 현실을 컴퓨터로 이사 시키는 것
 
+
 ## 전체 흐름
 업무파악 -> 개념적 데이터 모델링(ER digram) -> 논리적 데이터 모델링 (표로 전환) -> 물리적 데이터 모델링 (실제 SQL)
 
 업무파악
-- 하려는 일을 파악 
+- 하려는 일을 파악 (의뢰한 사람과 알아내는 것. 의뢰한 사람이 무엇을 원하는지) 
 
 개념적 모델링
-- 하고자하는 일에 대한 개념과 그 관의 상호작용 (ER diagram)
+- 하고자하는 일에 대한 개념과 그 개념안의 상호작용 (ER diagram)
 
 논리적 데이터 모델링
-- 관계형 데이터 베이스 표로 전환
+- 관계형 데이터 베이스 표로 전환 (우리가 생각했던 개념을 표로 전환하는 것)
 
 물리적 데이터 모델링
-- 어떤 데이터베이스 제품을 선택하고, 그 데이터베이스에 최적화된 코드를 작성해서 표를 만드는 것.
+- 어떤 데이터베이스 제품을 선택하고, 그 데이터베이스에 최적화된 코드를 작성해서 표를 만드는 것. (코드로 실제표를 만드는 것 - SQL 코드)
+
+데이터 모델링이란?
+- 문제를 현실로부터 뜯어내서 고도의 추상화 과정을 거쳐서, 컴퓨터라는 새로운 현실로 옮겨 담는 작업
+
 
 ## 업무파악
-컴퓨터 자체의 문제 - 데이터베이스를 만든다
-현실의 문제 - 데이터베이스를 통해 현실의 문제를 해결, 아이디어를 구현
+컴퓨터 공학에서 해결하는 두 가지 문제
+1. 컴퓨터 자체의 문제 - 데이터베이스를 만든다. (mysql, oracle을 만든다)
+2. 현실의 문제 - 데이터베이스를 통해 현실의 문제를 해결, 아이디어를 구현 (ex. 데이터베이스를 통해서 인터넷 뱅킹 구현)
 
 
 ## 기획
 와이어프레임 툴로 시각화.
 
+
 ## 개념적 데이터 모델링
 파악한 업무에서 개념을 뽑아 내는 것.
-( 논리적 데이터 모델링, 물리적 데이터 모델링을 하고 다시 돌아오면 쉽게 이해될 것 )
 
 Entity Relationship Diagram
-- 정보
-- 그룹 (연관된 정보의 그룹핑)
-- 관계 (정보 그룹 사이의 관계) 
--> 쉽게 표로 전환 할 수 있음
+- 정보(를 발견하고 표현할 수 있게 도와줌)
+- 그룹 (서로 연관된 정보의 그룹핑하고 다른 사람에게 표현할 수 있게 해줌)
+- 관계 (정보 그룹 사이의 관계를 인식하고 다른 사람에게 표현할 수 있게 해줌) 
+- ERD를 쉽게 표로 전환 할 수 있음
+
 
 ## 관계형 데이터베이스 다운 개념의 구조 
-RDB에서는 표안의표 즉 내포관계를 허용하지 않는다, 
+RDB에서는 표안의 표, 즉 내포관계를 허용하지 않는다, 
 거대 단일 테이블로 표현을 하면 중복이 발생한다,
--> 주제에 따라 테이블을 나눈다, 그리고 query문을 통해 원하는 데이터를 얻는다.
+- 해결방법: 주제에 따라 테이블을 나눈다, 그리고 query문을 통해 원하는 데이터를 얻는다.
+- 장점: 주제에 따라 데이터를 그룹핑, 글에 대한 정보가 필요하다면 글에 대한 표만을 조회하여 자원을 아낄 수 있음, join을 통하여 합성하여 데이터를 가져올 수 있음.
+
 
 ## ERD의 구성요소
-Entity는 네모, 속성은 원
+Entity (후에 Table로 전환)
+- 글이라는 entity는 실제적인 데이터가 아니다
+- 그 안의 정보 (제목,본문,생성일)가 구체적인 데이터 -> Attribute or 속성 (후에 표의 column이 된다)
 
-Entity (개념적 모델) -> 후에 Table로 전환
-- 글이라는 entity -> 그 안의 정보 (제목,본문,생성일)
-구체적인 데이터 -> Attribute or 속성
--> 후에 column이 된다.
-
+entity들의 관계
  -> - - -  쓰다 - - - <- 
-저자 -쓰다 - 글 - 소속 - 댓글
+저자 - 쓰다 - 글 - 소속 - 댓글
 - Relation(PK, FK, JOIN)
 - Entity 관의 연관성을 표현 해준 것 -> Relation
 
-Entity -> Table
-Attribute -> Column
-Relation -> PK, FK
-Tuple -> Row (그리고 행 )
+□ Entity -> Table
+○ Attribute -> Column
+◇ Relation -> PK, FK
+Tuple -> Row (그리고 행)
+
 
 ## Entity 정의
 기획서에서 Entity를 찾아내야함. (읽기 화면보다는, 쓰기 화면에서 찾기가 쉬움)
-
 Entity 추출!
-저자, 글, 댓글
+- 저자, 글, 댓글
 
 
 ## 속성 정의
-
 제목, 작성일, 본문 (글)
-
 이름, 자기소개, 가입일 (저자)
-
 본문, 작성일 (댓글)
 
+
 ## Idetifier(식별자) 지정
+속성 중의 대표를 뽑는 것
 ex) 자동차번호, 도메인, 주빈등록번호 
--> 원하는 대상을 정확히 타겟팅, 다른 데이터와 겹치면 안된다.
+- 원하는 대상을 정확히 타겟팅
+- 다른 데이터와 겹치면 안된다
 
-candidate key -> 식별자가 될 수 있는 키들
+candidate key(후보키) -> 식별자가 될 수 있는 키들
 - 중복값을 지니지 않은 것.
+- 기본키가 선택되면 나머지는 alternate key(대체키)
+  - secondary index를 걸기 좋음
 
-primary key -> candidate keys중 선택되어진 키.
+primary key(기본키) -> candidate keys중 선택되어진 키.
 - 나머지는 alternate key(대체 키)가 됨. -> 추후에 성능 향상을 위해 index?로 사용 가능한듯?
 
 composite key (중복키)
 - 두 가지 데이터를 함께 사용해야 식별할 수 있는 것.
 
-ER diagram에 밑줄 = primary key
+ER diagram에서의 밑줄 = primary key
 
 (저자 아이디, 글아이디, 댓글아이디) 추가 -> 각 entity가 자신의 식별자를 확인할 수 있는 식별자를 생성.
+
 
 ## Relationship (Entity간의 연갈)
 foreign key
@@ -421,45 +434,60 @@ foreign key
 relationship이란 
 - primary key와 foregin key가 연결되는 것을 통해 구현된다.
 
-relationship은 마름모 꼴
 
-저자 - 작성 - 글 // 저자 - 작성 - 댓글 // 글 - 소속 - 댓글
+□저자 - ◇작성 - □글 // □저자 - ◇작성 - □댓글 // □글 - ◇소속 - □댓글
+
 
 ## Cardinality
 1 - 1
 담임 - 반 (각 선생님은 한 반만 담임한다)
-반 - 담인 (각 반의 담인은 한명이다)     검은네모 - 검은네모
+반 - 담인 (각 반의 담인은 한명이다)
+■---■
 
 
 1 - N
 저자 - 댓글 (각 저자는 여러 글을 작성한다)
-댓글 - 저자 (각 댓글은 하나의 저자만 존재한다) 검은네모 -<(삼발이) 검은네모
+댓글 - 저자 (각 댓글은 하나의 저자만 존재한다)
+■--<(삼발이)■
+
 
 N - M
-저자 - 글 (각 저자는 여러 글을 작성한다)    검은네모 >-< 검은네모
+저자 - 글 (각 저자는 여러 글을 작성한다)    
 글 - 저자 (각 글은 여러 저자가 존재한다)
-- 이 경우 연결 테이블을 사용하여, 1 - N 관계로 converting 하여 구현
+■>-<■
+- 실제로 DB table에서 표현할 수 없기 때문에, 이 경우 연결 테이블을 만들어서, 1 - N 관계로 converting 하여 구현
+
 
 ## Optionality
 저자에게 댓글은 option이다.
 
-저자 - 댓글 (저자는 댓글을 작성하지 않을수도 있다)  검은네모 -o 검은네모
-댓글 - 저자 (각 댓글은 반드시 저자가 있다)        검은네모 |-o 검은네모 (| mandatory)
+저자 - 댓글 (저자는 댓글을 작성하지 않을수도 있다)  
+■--o■
+
+댓글 - 저자 (각 댓글은 반드시 저자가 있다)        
+■-|-o■ (| mandatory)
+■-|-o<■ (1 - N 이기 때문에)
 
 
 ## 논리적 데이터 모델링
-개념적 모델링 - 개념을 뽑아내는일
+개념적 모델링 - 개념을 뽑아내는 일
 논리적 데이터 모델링 - 뽑아낸 개념을 관계형 데이터베이스 패러다임에 어울리게 데이터 형식을 정리정돈
 
-Mapping Rule - ER Digram을 통해서 표현한 내용을 관계형 데이터베이스로 전환할 때 쓰는 방법론
-네모 - Entity -> Table
-동그라미 - Attribute -> Column
-마름모 - Relation -> PK, FK
+Mapping Rule
+- ER Digram을 통해서 표현한 내용을 관계형 데이터베이스로 전환할 때 쓰는 방법론
+□ Entity -> Table
+○ Attribute -> Column
+◇ Relation -> PK, FK
+
 
 ## 테이블과 컬럼
-1. Entity를 Table로
+ERD를 관계형 데이터 모델로 전환하는 작업을 진행
+- ER Master사용해도 좋을듯
+
+1. Entity를 Table로 변환
 - Foregin key가 없는 테이블 먼저하면 좋은듯?
 
+2. 속성을 만든다
 -저자-
 - id(pk), name, profile, created, 
 - int   ,VarChar,VarChar,datetime
@@ -470,17 +498,24 @@ Mapping Rule - ER Digram을 통해서 표현한 내용을 관계형 데이터베
 
 
 ## 1:1 관계의 처리
-부모 (저자 - 휴먼저자) 자식 휴먼저자는 저자에게 의존 
-저자 Primarty, 휴먼저자 Foreign key 
+Relationship을 PK와 FK를 연결하는 것을 통해 관계형 데이터베이스 모델에 맞게 converting
+
+저자 Primary key, 휴먼저자 Foreign key 
+- 저자(부모테이블) - 휴먼저자 의존 없이 잘 지냄
+- 휴먼저자(자식테이블) - 저자에게 의존
+
 
 ## 1:N 관계의 처리
+저자와 댓글
+
 
 ## N:M 관계의 처리
-어느 쪽이든 column을 추가하기가 어려움
+저자와 글
+- 어느 쪽이든 column을 추가하기가 어려움 (한 column에 여러개의 데이터가 들어가는 문제가 생겼기 때문에)
 
-mapping table을 만듦
--write-
-author_id, topic_id, created
+mapping table(중재자)을 만듦
+- write 테이블을 생성
+- [author_id, topic_id, created]
 
 
 ## 정규화 (Normalization)
@@ -492,6 +527,7 @@ UNF - unnomalizedform
 6NF
 - 주로 3NF까지 많이 사용
 http://bit.ly/2wV2SFj
+
 
 ## First Normal Form
 - Atomic columns
@@ -545,3 +581,7 @@ ex) grouby count query를 매번 하지 않게
 ## 역정규화 : 관계의 역정규화
 - Foreign key를 추가하여 join을 줄이는 것
 
+
+```
+
+```
