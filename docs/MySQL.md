@@ -519,9 +519,9 @@ mapping table(중재자)을 만듦
 
 
 ## 정규화 (Normalization)
-정제되지 않은 데이터를 관계형 데이터베이스에 어울리는 표로 만드는 레시피.
+정제되지 않은 데이터(표)를 관계형 데이터베이스에 어울리는 표로 만드는 레시피.
 
-UNF - unnomalizedform
+UNF - UnnomalizedForm
 1NF - FirstNormalizedForm
 ...
 6NF
@@ -538,37 +538,45 @@ http://bit.ly/2wV2SFj
 ## Second Normal Form
 - No partial dependencies
 - 부분 종속성이 없어야한다
--> 중복키가 없어야 한다.
+- 기본키 중에 중복키가 없어야 한다.
+
 
 ## Third Normal Form
 - No transitive dependencies
+- 이행적 종속성 없어야한다
 - foregin key는 중복이라고 치지 않는다
+
 
 ## 물리적 데이터 모델링
 이상적인 표를 구체적인 제품에 맞는 현실적인 표로 만드는 것(성능)
 "find slow query"
 
 normalized된 form을 성능을 위해 denormalization
-- 그 전에 고려해봐야함. 
-- Index -> 행에 대한 읽기 성능을 향상시키고 쓰기 성능을 하향시킴 + 저장 공간이 더 많이 듦 but 빠름
-- application 영역에서 cache 사용
+- 그 전에 고려해봐야 될 것  
+  - Index -> 행에 대한 읽기 성능을 향상시키고 쓰기 성능을 하향시킴 + 저장 공간이 더 많이 듦 but 빠름
+  - application 영역에서 cache 사용
 - 그래도 안되면 denormalization
 
+
 ## denormalization
-정규화를 통해서 만든 표를 성능이나 개발의 필요성에 의해 조작하는 것
+정규화를 통해서 만든 이상적인 표를 성능이나 개발의 필요성에 의해 조작하는 것 (구조를 바꾸는 것)
 - 정규화 -> 대체로 쓰기의 편리함을 위해 읽기를 희생하는 것 (표를 쪼개고 후에 Join을 사용해야 하기 때문)
+  - join은 비싼 작업 
 - 하지만, 꼭 정규화를 하고 역정규화를 해야하는 것
 
 http://bit.ly/2WLMCko
 
+
 ## 역정규화 : 컬럼을 조작해서 join을 줄이기
 - join을 안해도 되서 더 빠름
 - 대신 normalization 하기 전의 문제가 다시 생김(중복)
-- 시스템의 복잡도가 높아짐(성능을 위해..?)
+- 시스템의 복잡도가 높아짐(성능을 위해..)
+
 
 ## 역정규화 : 컬럼을 조작해서 계산을 줄이기
 계산값을 column에 추가 
 ex) grouby count query를 매번 하지 않게
+
 
 ## 역정규화 : 표를 쪼개기
 - 컬럼을 기준으로 표를 쪼개기
@@ -577,6 +585,7 @@ ex) grouby count query를 매번 하지 않게
 
 - 행을 기준으로 표를 쪼개기
 - topic_1000 // topic _2000
+
 
 ## 역정규화 : 관계의 역정규화
 - Foreign key를 추가하여 join을 줄이는 것
