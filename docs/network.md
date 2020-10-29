@@ -3,11 +3,13 @@
 ## 공부자료
 ~~[x] [강좌1~4](https://www.youtube.com/playlist?list=PLXvgR_grOs1BjBZiePPZMR1PmZybazxg6)~~
 
-[] [slides](https://gaia.cs.umass.edu/kurose_ross/ppt.htm)
+[x] [slides](https://gaia.cs.umass.edu/kurose_ross/ppt.htm)
 
 - **슬라이드로 충분한듯**
 
 ~~[] [이대강좌](http://www.kocw.net/home/search/kemView.do?kemId=1046412)~~
+- Network layer, Link Layer는 강좌 시청하면 좋을듯
+
 
 ~~[][책](http://www.yes24.com/Product/Goods/45543957)~~
 
@@ -473,3 +475,98 @@ What’s missing (compared with IPv4):
 - no options (available as upper-layer, next-header protocol at router)
 
 tunneling: IPv6 datagram carried as payload in IPv4 datagram among IPv4 routers (“packet within a packet”)
+
+
+## Ch.5 Network Layer: Control Plane (강좌 시청 필요)
+Network-layer functions
+- forwarding: move packets from router's input to appropriate router output - data plane
+- routing: determine route taken by packets from source to destination - control plane
+
+two approaches
+- per-router control (traditional)
+  - Individual routing algorithm components in each and every router interact in the control plane
+- logically centralized control (software defined netowkring)
+  - Remote controller computes, installs forwarding tables in routers
+
+Routing protocols
+- goal: determine “good” paths (equivalently, routes), from sending hosts to receiving host, through network of routers
+  - good: least 'cost', 'fastest', 'least congested'
+
+Dijkstra's algorithm
+- least-cost-path tree from certain node
+
+Bellman Ford Algorithm
+
+Distance vector algorithm 
+- from time-to-time, each node sends its own distance vector estimate to neighbors
+
+
+## Ch.6 Link Layer (강좌)
+MAC addresses and ARP(Address Resolution Protocol)
+- 32-bit IP address
+- ethernet - 48 bit MAC address
+- host에 물리적인 링크 (MAC주소)가 지정되어 있음
+
+how to determine interface's MAC address, knowing its IP address?
+- Frame에 MAC주소
+  - Adapter들의 맥주소
+  - ARP table: IP/MAC address mappings
+    - 20분동안 caching
+    - A에서 B로 보내면, 높은 찬스로 B에서 A로 보냄
+
+Same LAN
+A wants to send datagram to B (ARP protocol을 이용해서)
+- B's MAC address not in A's ARP table
+- A broadcast ARP query packet, containing B's IP address
+- B receives ARP packet, replies to A with its (B's) MAC address
+
+IP routing -  Source host -> -> -> destination host
+MAC ARP - 하나를 건너가는 것
+
+Routing to another LAN
+assume A knows B's IP address - DNS
+assume A knows IP address of first hop router, R - DHCP
+assume A knows R's MAC address - ARP
+
+IP 계층 MAC 계층이 colloborate에서 home host to destination host로.
+- IP 계층: 목적지 호스트로 가기위해서 다음홉이 누군가를 결정
+- MAC 계층: 다음 홉으로 가기위해서 physical 링크를 타야하는데 physical 네트워크를 타기 위한 source destinatino을 지정해서 내보내는 것
+
+scenario: student attaches laptop to campus network, request/receives www.google.com
+1. connecting latop needs to get its own **IP address**, **addr of frist-hop router**, **addr of DNS server**: use DHCP(DHCP가 이 세가지를 알려줌)
+2. DHCP request encapsulated in UDP, encapsulated in IP, encapsulated in 802.3 Ethernet
+3. ehternet frame broadcast on LAN
+4. ethernet demuxed to IP demuxed, UDP demuxed to DHCP
+5. DHCP server formulates DHCP, ACK containing cilent's ip address
+6. encapsulation at DHCP server, frame forwarded through LAN, demultiplexing at client
+- client now has IP address, knows name & addr of DNS server, IP address of its first-hop router
+7. before sending HTTP request, need IP address of www.google.com:DNS
+8. DNS query created, encapsulated in UDP, encapsulated in IP, encapsulated in Eth. To send frame to router, need MAC address of router interface:ARP
+- first hop router를 모름 -> ARP protocol을 실행함
+  - first hop router가 MAC address를 알려줌
+9. IP datagram forwarded from campus network into comcast network, routed (tables created by RIP, OSPF, IS-IS and/or BGP routing protocols) to DNS server
+10. demux' ed to DNS server
+11. DNS server replies to client with IP address of www.google.com
+12. to send HTTP request, client first opens TCP socket to web server
+13. TCP SYN segment inter-domain routed to web server
+14. web server TCP SYNACK
+15. TCP connectino estabilshed
+16. HTTP request sent into TCP socket
+17. IP datagram containing HTTP request routed to www.google.com
+- ARP없이 어떻게 가능하지? 20분동안 caching!(대박...)
+- 목적지가 아니면 IP위로 뜯지 않음! 목적지에서만 위로 더 올라감
+18. web server responds with HTTP reply(containing web page)
+19. IP datagram containing HTTP reply routed back to client
+20. web finally displayed!!!
+
+네트워크에 들어오면 plug and play protocol:DHCP가 먼저 구동
+- DHCP에 의해서 IP를 할당받고
+- first hob router 세팅(IP 계층에서 Keep) - 내부헙이 아닌 외부 헙으로 나가야된다
+- 상대방의 IP주소는 DNS 서버로
+  - url을 타이핑하면, HTTP가 ip주소를 모름으로 DNS를 구동
+    - 구동하려는 웹서버의 IP주소를 얻으려고함
+    - 근데 first hob 모르니깐 ARP
+  HTTP request할 때는 이미 웹서버의 IP주소를 아는 상태로 내려보냄
+    - TCP가 자동적으로 TCP connection을 맺음
+      - 똑같이 Router로 통해야되지만 이미 MAC주소가 routers에 caching 되어있는 상태
+      - SYNC ACK -> HTTP request
