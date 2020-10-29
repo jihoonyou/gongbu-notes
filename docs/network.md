@@ -1,11 +1,11 @@
 # network
 
 ## 공부자료
-[x][강좌1~4](https://www.youtube.com/playlist?list=PLXvgR_grOs1BjBZiePPZMR1PmZybazxg6)
+~~[x] [강좌1~4](https://www.youtube.com/playlist?list=PLXvgR_grOs1BjBZiePPZMR1PmZybazxg6)~~
 
-[][slides](https://gaia.cs.umass.edu/kurose_ross/ppt.htm)
+[] [slides](https://gaia.cs.umass.edu/kurose_ross/ppt.htm)
 
-- 슬라이드로 충분한듯 
+- **슬라이드로 충분한듯**
 
 ~~[] [이대강좌](http://www.kocw.net/home/search/kemView.do?kemId=1046412)~~
 
@@ -401,3 +401,75 @@ TCP slow start
 
 QUIC: Quick UDP Internet Connections
 - application-layer protocol, on top of UDP
+
+
+## Ch.4 Network Layer: Data Plane
+network layer: transport segment from sending to receving host
+
+- sender: encapsulates segments into datagrams, passes to link layer
+- receiver: delivers segments to transport layer protocol
+
+routers:
+- examines header fields in all IP datagrams passing through it
+- moves datagrams from input ports to output ports to transfer datagrams along end-end path
+
+Two key network-layer functions
+1. forwarding: move packets from a router’s input link to appropriate router output link
+2. routing: determine route taken by packets from source to destination
+
+Data plane (라우터 개념)
+- local, **per-router function**
+- determins how datagram arriving on router input port is forwarded to router output port
+
+Control plane (쫌 더 넓은 개념?- 라우터들)
+- network-wide logic
+- determines how datagram is routed among routers along end-end path from source host to destination host
+
+software-defined networking (SDN): 
+- implemented in (remote) servers
+- Remote controller computes, installs forwarding tables in routers
+
+Router
+- input port functions
+  - destination based forwarding: forward based only on destination IP address
+    - longest prefix matching
+  - generalized forwarding: forward based on any set of 
+  header field values
+- switching fabrics
+  - transfer packet from input link to appropriate output link
+    - via memory, bus, interconnection network
+- buffer management
+  - drop, marking
+- packet scheduling: FCFS, priority, round robin, weighted fair queueing
+  - RR: arriving traffic classifed, queded by class,
+    - server cyclically, repeatedly  scans class queues, sending one complete packet from each class (if available) in turn
+  - WFQ: generalized Round Robin
+    - each class, i, has weight, wi, and gets weighted amount of service in each cycle
+
+IP: Internet Protocol
+- IP address: 32-bit identifier associated with each host or router interface
+  - interface: connection b/w host/router and physical link
+
+Subnets
+- device interfaces that can physically reach each other without passing through an intervening router
+  - each isolated network is called a subnet
+
+CIDR: Classless InterDomain Routing
+- a.b.c.d/x, where x is # bits in subnet portion of address
+
+How does host get IP address?
+- DHCP: Dynamic Host Configuration Protocol: dynamically get address from as server
+- goal: host dynamically obtains IP address from network server when it “joins” network
+
+are there enough 32-bit IP addresses?
+- ICANN allocated last chunk of IPv4 addresses to RRs in 2011
+- IPv6 has 128-bit address space
+
+NAT(network address translation): all devices in local network share just one IPv4 address as far as outside world is concerned
+
+What’s missing (compared with IPv4):
+- no checksum (to speed processing at routers)
+- no fragmentation/reassembly
+- no options (available as upper-layer, next-header protocol at router)
+
+tunneling: IPv6 datagram carried as payload in IPv4 datagram among IPv4 routers (“packet within a packet”)
