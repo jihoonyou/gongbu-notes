@@ -326,4 +326,78 @@ CDN(Content distribution networks)
   2. store/serve multiple copies of videos at multiple geographically distributed sites
 
 
-  ## Ch.3 Transport Layer 
+## Ch3 Transport Layer
+provide logical communication b/w application processes running on different hosts
+- sender: breaks application messages into segments, passes to network layer
+- receiver: reassembles segments into messages, passes to application layer
+- TCP, UDP
+  - UDP: demultiplexing using destination port number(only)
+  - TCP: demultiplexing using 4-tuple: source and destination IP addresses, and port numbers
+transport layer: logical communication between **processes**
+network layer: logical communication between **hosts**
+- host receives IP datagrams
+  - each datagram has source IP address, destination IP address
+  - each datagram carries one transport-layer segment
+  - each segment has source, destination port number
+- host uses **IP addresses & port numbers** to direct segment to appropriate socket
+
+UDP: User Datagram Protocol
+- best effort service
+- connectionless
+
+UDP checksum
+- Goal: detect errors (i.e., flipped bits) in transmitted segment
+
+rdt = Reliable data transfer protocol
+rdt1.0: no error
+
+rdt2.0: channel with bit erros
+- ACKs: receiver explicitly tells sender that pkt received OK
+- NAKs: receiver explicitly tells sender that pkt had errors
+  - sender retransmits pkt on receipt of NAK
+  - stop and wait: sender sends one packet, then waits for receiver response
+
+rdt2.1: sender, handling garbled ACK/NAKs
+- in case ACK/NAK corrupted
+  - sender retransmits current pkt with sequence number to each pkt
+  - receiver discards duplicate pkt
+
+rdt2.2: a NAK-free protocol
+- same functionality as rdt2.1, using ACKs only
+- instead of NAK, receiver sends ACK for last pkt received OK
+
+rdt3.0: channels with errors and loss
+- New channel assumption: underlying channel can also lose packets (data, ACKs)
+- Approach: sender waits “reasonable” amount of time for ACK 
+  - retransmits if no ACK received in this time
+  - if pkt (or ACK) just delayed (not lost):
+  - use countdown timer to interrupt after “reasonable” amount of time
+- pipelining
+  - go-back-N
+    - sender: "window" of up to N
+      - cumulative ACK
+    - receiver: always send ACK for correctly-received packet so far, with highest in-order seq #
+  - selective repeat
+    - receiver individually acknowledges all correctly received packets
+    - buffer
+
+TCP flow control (application에서 과다): one sender too fast for one receiver
+- what happens if network delivers data faster than applicatino layer removes data from socket buffers?
+- a mechanism to the calamity of a receiver being over-run by a sender that is sending too fast – it allows the RECEIVER to explictly control the SENDER so sender won’t overflow receiver’s buffer by transmitting too much, too fast 
+- the receiver informs the sender how much free buffer space there is, and the sender is limited to send no more than this amount of data.  
+
+Contestion control (network layer에서 과다): too many senders, endeing too fast
+- “too many sources sending too much data too fast for network to handle”
+
+TCP congestion control: AIMD(Additive Increase Multiplicative Decrease)
+- senders can increase sending rate until packet loss (congestion) occurs, then decrease sending rate on loss event
+
+TCP congestion control: details
+- TCP sender limits transmission: LastByteSent - LastByteAcked <= cwnd
+  - cwnd is dynamically adjusted in response to boserved network congestion
+
+TCP slow start
+- initial rate is slow, but ramps up exponentially fast
+
+QUIC: Quick UDP Internet Connections
+- application-layer protocol, on top of UDP
