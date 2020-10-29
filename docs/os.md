@@ -1,9 +1,11 @@
 # Operating System
 
 ## 공부자료
-[x][studytonight_os](https://www.studytonight.com/operating-system/)
-[x][Qualcomm대비_개인정리자료][https://docs.google.com/document/d/1Pdg4fWfAP8jZ4exJevQO4fwnQUGKxVZwhciTt6-ixcw/edit]
-[]연대수업자료 추가(시간이 된다면, 개인필기노트 추가)
+[x] [studytonight_os](https://www.studytonight.com/operating-system/)
+
+[] [Qualcomm대비_개인정리자료][https://docs.google.com/document/d/1Pdg4fWfAP8jZ4exJevQO4fwnQUGKxVZwhciTt6-ixcw/edit]
+
+[] 연대수업자료 추가(시간이 된다면, 개인필기노트까지 추가)
 
 
 ## OS
@@ -33,8 +35,11 @@ Text Section: A Process, sometimes known as the Text Section, also includes the 
 - running: Instructions are being executed.
 - blocked (or waiting): The process is waiting for some event (e.g., I/O completion) to occur.
 - exit (or terminated): The process has finished execution.
+
 ![process_states](./images/process-states.png)
+
 waiting이라는 state는 ready와는 다르게 I/O나 다른 이벤트가 발생하기를 기다리는 것을 나타내는 상태
+
 1. 프로세스가 실행 중 로그인이 필요(I/O)
 2. 입력을 기다리면서(I/O 발생 기다림) 다른 프로세스를 돌림 (running -> wait)
 3. 로그인 정보를 입력(I/O 발생) (wait -> ready)
@@ -177,6 +182,7 @@ A multi-level queue scheduling algorithm partitions the ready queue into several
 Each queue has absolute priority over lower-priority queues.
 
 In a multilevel queue-scheduling algorithm, processes are permanently assigned to a queue on entry to the system. Processes do not move between queues. This setup has the advantage of low scheduling overhead, but the disadvantage of being inflexible.
+
 ![Multilevel](./images/multi-level-scheduling.png)
 
 ### Multilevel Feedback Queue Scheduling
@@ -184,5 +190,126 @@ Multilevel feedback queue scheduling, however, allows a process to move between 
 - The idea is to separate processes with different CPU-burst characteristics. 
 - If a process uses too much CPU time, it will be moved to a lower-priority queue. Similarly, a process that waits too long in a lower-priority queue may be moved to a higher-priority queue.
 - This form of aging prevents starvation.
+
 ![Multilevel-feedback](./images/multi-level-feedback-scheduling.png)
+
+
+## Thread
+an execution unit which consists of its own program counter, a stack, and a set of registers
+known as Lightweight processes
+
+![multi-thread](./images/single-and-multithreaded-process.png)
+
+### User-level Thread vs Kernel level thread
+User level thread
+- user manages thread
+- the thread management kernel is not aware of existence of thread
+  - Thread library codes for creating, destroying threads, passing msg, data between threads, scheduling thread
+
+advantages
+- it does not require kernel-mode privileges
+- it can run on any OS 
+- faster to create and manage
+
+disavantages 
+- most system calls blocking
+
+Kernel level Thread
+- os Manged managed thread
+- thread management is done by a kernel
+- Kernel threads are supported directly by OS
+- Kernel maintains context information in the process as a whole and for individual threads within process
+- kernel performs thread creation, scheduling, management
+
+advantage
+- it can simulatenously schedule multiple thread from the same process on multiple processes
+- if one thread is blocked, kernel can schedule another thread of the same process
+
+disadvantage
+- these are slower to create and manage
+- Requires mode switch
+
+Thread Libraries?
+- provide programmers with API for creation and management of threads
+
+
+## Process Synchronization
+Concurrent access to shared data is handled thereby minimizing the chance of inconsistent data
+
+![critical-section](./images/critical-section-problem.png)
+
+A **Critical Section** is a code segment that accesses shared variables and has to be executed as an atomic action.
+- If any other process also wants to execute its critical section, it must wait until the first one finishes.
+
+Entry Section – It is part of the process which decide the entry of a particular process in the Critical Section, out of many other processes.
+
+Critical Section – It is the part in which only one process is allowed to enter and modify the shared variable.This part of the process ensures that only no other process can access the resource of shared data.
+
+Exit Section – This process allows the other process that are waiting in the Entry Section, to enter into the Critical Sections. It checks that a process that after a process has finished execution in Critical Section can be removed through this Exit Section.
+
+Remainder Section – The other parts of the Code other than Entry Section, Critical Section and Exit Section are known as Remainder Section.
+
+### Solutions
+Semaphore, mutex, busy wait
+- A Semaphore is an integer variable, which can be accessed only through two operations wait() and signal().
+- There are two types of semaphores : Binary Semaphores and Counting Semaphores
+- TestAndSet is a hardware solution to the synchronization problem. 
+
+Mutex/semaphores
+Mutex - **locking mechanism** used to synchronize access to a resource. Only one task can acquire the mutex. It means there is ownership associated with mutex, and only the owner can release the lock
+
+Semaphore - **Signal mechanism**  (“I am done, you can carry on” kind of signal). For example, if you are listening songs (assume it as one task) on your mobile and at the same time your friend calls you, an interrupt is triggered upon which an interrupt service routine (ISR) signals the call processing task to wakeup.
+
+
+## Deadlock
+a situation where a set of processes are blocked because each process is holding a resource and waiting for another resource acquired by some other process.
+
+![deadlock](./images/deadlock.png)
+
+Condition for deadlock
+- all these four has to happen simultaneously
+  - Mutual exclusion (not shareable)
+    - only one process can use a resource at one time
+    - if not sharable deadlock may occur
+  - hold and wait 
+    - holding one resource and waiting for another to come.
+  - no preemption
+    - A resource can be released voluntarily on its completion
+  - circular wait
+    -  acquire some resources that is need by B, B acquires some resources that is needed by C, C acquires some resources that is needed by D, D acquires resources that are needed by A
+- if we prevent any one of these conditions, you can prevent deadlock
+
+## Methods for handling deadlock
+Deadlock Ignorance
+- if occur just ignore
+- whenever deadlock occurs, OS just restart the system.
+- deadlock is very rare, let it happen and reboot the system.
+
+Deadlock Prevention 
+- prevent deadlock before occurring
+- try to find a solution before deadlock occurs
+  - try to remove all of the conditions or at least try to remove make false any one of the conditions.
+1. Make Mutual exclusion false -> Just share the resources
+  - not always possible ex) printer not sharable print one page by page
+2. Make No preemption false -> preemptions true
+  - using time quantum method to accessing a resource
+3. Make hold and wait false -> try to do no hold and wait
+  - try to give all the resources to the process before it starts
+4. Make Circular wait false -> try to make Circular wait false
+  - To remove circular wait just give the numbering to all resources
+  - so that the process can request in increasing order.
+    - ex) CPU -1, printer -2, Scanncer -3
+
+Deadlock Avoidance
+- each process declare max no of resources that it may need
+- ensure that a system will never enter a unsafe stage
+- deadlock avoidance alg dynamiccaly examines the resources allocatino can never be a circular wait condition.
+- Banker’s algorithm (Deadlock Avoidance)
+  - When process used resources with max, must return
+  - [Banker's algorithm](https://www.youtube.com/watch?v=T0FXvTHcYi4&ab_channel=SlavenP)
+
+Deadlock detection and recovery
+- Real-time operating systems use Deadlock recovery.
+  - **Killing the process**: killing all the process involved in the deadlock. Killing process one by one. After killing each process check for deadlock again keep repeating the process till system recover from deadlock.
+  - **Resource Preemption**: Resources are preempted from the processes involved in the deadlock, preempted resources are allocated to other processes so that there is a possibility of recovering the system from deadlock. In this case, the system goes into starvation.
 
