@@ -3,7 +3,13 @@
 ## 공부자료
 [x][강좌1~4](https://www.youtube.com/playlist?list=PLXvgR_grOs1BjBZiePPZMR1PmZybazxg6)
 
-[][책](http://www.yes24.com/Product/Goods/45543957)
+[][slides](https://gaia.cs.umass.edu/kurose_ross/ppt.htm)
+
+- 슬라이드로 충분한듯 
+
+~~[] [이대강좌](http://www.kocw.net/home/search/kemView.do?kemId=1046412)~~
+
+~~[][책](http://www.yes24.com/Product/Goods/45543957)~~
 
 
 ## Ch.1 컴퓨터 네트워크와 인터넷
@@ -180,4 +186,144 @@ OSI 7 layer - 애플리케이션, 프레젠테이션, 세션, 트랜스포트, �
 4. 이 데이터그램은 링크 계층으로 전달되고 **링크 계층도 자신이 헤더 정보를 추가하고 링크 게층 프레임을 만든다.**
 
 
+## Ch2 Application Layer
+Client-server paradigm
+- server: permanent IP address
+  - always-on host
+- clients: may have dynamic IP addresses
+  - contact, communicate with server, do not communicate directly with each other
+- example: HTTP, IMAP, FTP
 
+Peer-peer architecture
+- arbitrary end systems directly communicate
+- example: P2P file sharing
+
+Process communicating
+- within same host, two process communicate using **inter-process-communication**
+- processes in different hosts communicate by exchanging **messages**
+
+Sockets
+- process sends/receives messages to/from its socket
+
+To receive messages, process must have identifier
+- includes both IP address and port numbers associated with process on host.
+
+TCP
+- reliable transport b/w sending and receving process
+- flow control: sender won't overhelm receiver
+- congestion control: throttle sender when network overloaded
+- connection-oriented: setup required between client and server processes
+- does not provide: timing, minimum throughput guarantee, security
+
+UDP
+- unreliable data transfer b/w sending and receiving process
+- does not provide: reliability, flow control, congestion control, timing, throughput guarantee, security, or connection setup.
+
+HTTP: hypertext transfer protocol
+- uses TCP
+- stateless
+
+Non-persistent HTTP
+1. TCP connection opened
+2. at most one object sent over TCP connection
+3. TCP connection closed
+- response time = 2RTT + file transmission time
+
+
+Persistent HTTP
+1. TCP connection opened to a server
+2. multiple objects can be sent over single TCP connection b/w client and server
+3. TCP connection closed
+
+RTT: tiem for a small packet to travel from client to server and back
+
+HTTP request messages
+POST, GET, HEAD, PUT
+
+HTTP response status codes
+status code appears in 1st line in server-toclient response message.
+- 200 OK
+  - request succeeded, requested object later in this message
+- 301 Moved Permanetly
+  - requested boject moved, new location specified later in this message
+- 400 Bad Request
+  - request msg not understood by server
+- 404 Not Found
+  - requested document not found no this server
+- 505 HTTP Version Not Supported
+
+cookies
+- HTTP GET/response interactino is stateless
+- Web sites and client browser  use cookies to maintain some state between transactions
+- four components:
+1. cookie header line of HTTP response message
+2. cookie header line in next HTTP request message
+3. cookie file kept on user’s host, managed by user’s browser
+4. back-end database at Web site
+used for:
+- authorization
+- shopping carts
+- recommendations
+- user session state
+
+Web caches (aka proxy servers)
+- Goal: satisfy client requests without involving origin server
+- user configures browser to point to a (local) Web cache
+- browser sends all HTTP requests to cache
+  - if object in cache: cache returns object to client
+  - else cache requests object from origin server, caches received object, then returns object to client
+- Web cache acts as both client and server
+
+Conditional GET
+- Goal: don’t send object if cache has up-to-date cached version
+- client: If-modified-since: <date>
+- server: HTTP/1.0 304 Not Modified
+
+HTTP/2
+- Key goal: decreased delay in multi-object HTTP requests
+- HTTP1.1:
+  - server responds in-order(FCFS)
+  - with FCFS, small object may have to wait for transmission  (head-of-line (HOL) blocking) behind large object(s)
+  - loss recovery (retransmitting lost TCP segments) stalls object transmission
+- HTTP2:
+  - incread flexibility at server in sending objects to client
+  - transmission order of requested objects based on client-specified object priority (not necessarily FCFS)
+  - divide objects into frames, schedule frames to mitigate HOL blocking
+
+HTTP/3
+- adds security, per object error- and congestion-control (more pipelining) over UDP
+
+E-mail
+- user agents
+- mail servers
+- SMTP
+  - protocol b/w mail servers to send email messages
+    - client: sending mail server
+    - server: receiving mail server
+
+
+DNS: Domain Name System
+- hostname-to-IP-address translation
+- host aliasing
+- load distribution
+
+Root, Top Level Domain, Authoritative
+
+tit-for-tat
+- every 30 secs: randomly select another peer, starts sneding chunks (optimistically unchoke)
+
+Streaming multimedia: DASH(Dynamic, Adaptive, Streaming over HTTP)
+- sever
+  - divides video file into multiple chunks
+  - each chunk encoded at multiple different rates
+- client
+  - periodically estimates server-to-client bandwidth
+  - can choose different coding rates at different points in time (depending on available bandwidth at time), and from different servers
+
+CDN(Content distribution networks)
+- challenge: how to stream content (selected from millions of videos) to hundreds of thousands of simultaneous users?
+  1. single, large "mega-server"
+  2. store/serve multiple copies of videos at multiple geographically distributed sites
+
+
+  ## Ch.3 Transport Layer 
