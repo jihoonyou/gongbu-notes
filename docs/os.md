@@ -3,7 +3,7 @@
 ## 공부자료
 [x] [studytonight_os](https://www.studytonight.com/operating-system/)
 
-[] [Qualcomm대비_개인정리자료][https://docs.google.com/document/d/1Pdg4fWfAP8jZ4exJevQO4fwnQUGKxVZwhciTt6-ixcw/edit]
+[] [Qualcomm대비_개인정리자료](https://docs.google.com/document/d/1Pdg4fWfAP8jZ4exJevQO4fwnQUGKxVZwhciTt6-ixcw/edit)
 
 [] 연대수업자료 추가(시간이 된다면, 개인필기노트까지 추가)
 
@@ -312,4 +312,81 @@ Deadlock detection and recovery
 - Real-time operating systems use Deadlock recovery.
   - **Killing the process**: killing all the process involved in the deadlock. Killing process one by one. After killing each process check for deadlock again keep repeating the process till system recover from deadlock.
   - **Resource Preemption**: Resources are preempted from the processes involved in the deadlock, preempted resources are allocated to other processes so that there is a possibility of recovering the system from deadlock. In this case, the system goes into starvation.
+
+
+## Main Memory
+also known as RAM
+- the word main is used to distinguish it from external mass storage devices such as disk drives
+- The computer is able to chagne only data that is in main memory. Therefore, every program we execute and every file we access must be copied from a storage device into main memory
+
+Dynamic Loading
+- loaded into the main memory only when it is called by the program
+
+Dynamic Linking
+- rather than loading all the dependent programs, CPU links the dependent programs to the main executing program when its required
+
+Swapping
+- the process of bringing in each process in main memory, running it for a while and then putting it back to the disk.
+- there is not enough main memory to hold all the currently active processes in a timesharing system. Therefore, excess process are kept on disk and brought in to run dynamically.
+
+Memory Allocation
+- process by which computer programs are assigned memory or space
+1. First Fit: The first hole that is big enough is allocated to program.
+2. Best Fit: The smallest hole that is big enough is allocated to program.
+3. Worst Fit: The largest hole that is big enough is allocated to program.
+
+Fragmentation
+- in a dynamic memory allocation system when most of the free blocks are too small to satisfy any request.
+- External Fragmentation: free holes exists to satisfy a request but is non contiguous
+- Internal Fragmentation: at times theㄴ physical memory is broken into **fixed size blocks** and memory is allocated in unit of block sizes. The memory allocated to a space may be slightly larger than the requested memory.
+
+Paging
+A solution to fragmentation problem.
+- a memory management mechanism that allows the physical address space of a process to be non-contagious
+- Here physical memory is divided into blocks of **equal size called Pages**. The pages belonging to a certain process are loaded into available memory **frames**.
+
+Page Table
+- the data structure used by a virtual memory system in a computer operating system to store the mapping between virtual address and physical addresses
+    - Virtual address = logical address
+    - Physical address = exists on memory
+
+Segmentation
+- user-view, dynamic size
+- Segmentation allows breaking of the virtual address space of a single process into segments that may be placed in non-contiguous areas of physical memory.
+- Segmentation is a memory management technique in which each job is divided into several segments of different sizes
+
+Virtual Memory
+In real scenarios, most processes never need all their pages at once:
+- Error handling code is not needed unless that specific error occurs, some of which are quite rare.
+- Arrays are often over-sized for worst-case scenarios, and only a small fraction of the arrays are actually used in practice.
+- Certain features of certain programs are rarely used.
+
+pros
+- Large programs can be written, as virtual space available is huge compared to physical memory.
+- Less I/O required, leads to faster and easy swapping of processes.
+- More physical memory available, as programs are stored on virtual memory, so they occupy very less space on actual physical memory.
+
+Demand Paging
+- Rather they are swapped in only when the process needs them(On demand).
+
+Page fault
+1. 페이지 테이블을 검사하여 필요로 하는 페이지의 메모리 참조가 유효(valid)한지, 유효하지 않은지(invalid)
+판단한다.
+2. 유효하지 않은(invalid) 상태라면 운영체제에게 트랩(trap)을 건다. 운영체제는 invalid 한 경우가 메모리
+경계를 넘는 것이라면 프로그램을 종료시키고, 페이지 폴트(page fault)라면 free frame 을 찾는다.
+3. 디스크에서 해당 페이지를 로딩하라고 I/O 요청을 하며, 프로세스를 waiting 상태로 바꾼다.
+4. 페이지가 free frame 에 로딩이 완료되었다는 인터럽트가 오면 페이지 테이블에 접근해서 상태를 invalid 에서
+valid 로 변경한 후, 프로세스를 waiting 에서 ready 로 변경한다.
+5. 페이지 폴트(page fault)를 야기했던 인스트럭션부터 다시 수행한다
+
+Page Replacement
+- what happens when a process requests for more pages and no free memory is available to bring them in
+1. Put the process in the wait queue, until any other process finishes its execution thereby freeing frames.
+2. Or, remove some other process completely from the memory to free frames.
+3. Or, find some pages that are not being used right now, move them to the disk to get free frames. This technique is called Page replacement and is most commonly used. We have some great algorithms to carry on page replacement efficiently.
+FIFO, LRU
+
+Thrashing
+- A process that is spending more time paging than executing is said to be thrashing
+- the process doesn't have enough frames to hold all the pages for its execution, so it is swapping pages in and out very frequently to keep executing
 
