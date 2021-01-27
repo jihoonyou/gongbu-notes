@@ -9,7 +9,7 @@
 
 [x] [프로그래머스-MySQL](https://programmers.co.kr/learn/challenges)
 
-[x]  [생활코딩-Relational data modeling](https://opentutorials.org/course/3883)
+[x] [생활코딩-Relational data modeling](https://opentutorials.org/course/3883)
 
 
 ## 데이터베이스의 목적
@@ -580,6 +580,7 @@ ex) grouby count query를 매번 하지 않게
 
 ## 역정규화 : 표를 쪼개기
 - 컬럼을 기준으로 표를 쪼개기
+  - 용량이 큰 description을 쪼개는 것.
 - topic // topic_description
 - shadding(표 별로..? 컴퓨터를 나누어 각자 빠르게 처리하게)
 

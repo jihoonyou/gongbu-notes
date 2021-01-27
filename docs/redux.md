@@ -19,7 +19,7 @@ undo, redo를 쉽게 할 수 있음
 - 현재 상태 뿐만 아니라, 과거 여러 시점을 볼 수 있음
 - module reloading -> 우리가 작성한 코드가 자동으로 적용되는 것 (hot module reloading)
 
-![redux_map](./images/reduxmap.png)
+![redux_map](images/reduxmap.png)
 
 ## state와 render의 관계
 redux의 핵심은 store(은행이라고 비유)

@@ -127,12 +127,22 @@ Inline element - don't do any of that
 이 웹페이지의 모든 엘리먼트의 사이즈에 width와 height를 border-box로 
 -> default로는 content-box로 되어있음 (border를 제외한 속.)
 
-margin auto means -> the elft and right margin are adjusted automatically according to the context of the element.
+margin auto means -> the left and right margin are adjusted automatically according to the context of the element.
 
 
 Relative vs. Absolute
 - Before do anything, we have to ensure parent element is relatve-positioned element.
 
 
+## Web design basic
+typography
+- to amek written language readable and beautiful
+1. Use a font-szie between 15 and 25 pixels
+2. Use big font sizes for headlines
+3. use line spacing between 120 and 150%
+4. 45 to 90 chracters per line
+5. Use good fonts
 
 
+-- .. more for design re-visit when needed -- 
+steal like an artist
