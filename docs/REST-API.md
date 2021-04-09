@@ -104,3 +104,10 @@ why self-descriptive and HATEOAS are neeeded?
 
 참고
 [resource][https://www.youtube.com/watch?v=RP_f5dMoHFc]
+
+## REST API
+- REST형식의 API
+- 핵심 컨텐츠 및 기능을 외부 사이트에서 활용할 수 있도록 제공되는 인터페이스
+-  클라이언트는 이러한 REST API들을 조합한 어플리케이션을 만들 수 있게 되었습니다
+1. 첫 번째, URI는 정보의 자원을 표현해야 한다.
+2. 두 번째, 자원에 대한 행위는 HTTP Method(GET, POST, PUT, DELETE)로 표현한다.
