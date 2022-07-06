@@ -13,3 +13,16 @@
 ## 2 웹 백엔드 프로그래밍 기초 - Web개발의 이해
 ### 웹의 동작 (HTTP 프르토콜 이해)
 - [노트정리](https://truth-exoplanet-99c.notion.site/HTTP-e8f1097b78764bdf8d3bbec44dc3e85a)
+
+### 웹서버
+- [노트정리](https://truth-exoplanet-99c.notion.site/ff2c1e5b03394bdaaba106b6537151fb)
+
+### WAS
+- [노트정리](https://truth-exoplanet-99c.notion.site/WAS-5c5b65b57ed147669af6e05c81c44db3)
+
+### Browser 동작
+- [노트정리](https://truth-exoplanet-99c.notion.site/browser-469f04c021414fb296f8a5b67d2d20cc)
+
+### 웹 Front-End 와 웹 Back-End & browser에서의 웹 개발
+- [노트정리](https://truth-exoplanet-99c.notion.site/Front-End-Back-End-c3eeef844f5d4e78a3499b28d52b81a2)
+- [노트정리](https://truth-exoplanet-99c.notion.site/browser-eb5464f1b64a457e8a7fb3167f54bb43)
