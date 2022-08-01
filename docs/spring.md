@@ -26,3 +26,25 @@
 ### 웹 Front-End 와 웹 Back-End & browser에서의 웹 개발
 - [노트정리](https://truth-exoplanet-99c.notion.site/Front-End-Back-End-c3eeef844f5d4e78a3499b28d52b81a2)
 - [노트정리](https://truth-exoplanet-99c.notion.site/browser-eb5464f1b64a457e8a7fb3167f54bb43)
+
+### 웹서버 & WAS
+- [노트정리](https://truth-exoplanet-99c.notion.site/ff2c1e5b03394bdaaba106b6537151fb)
+- [노트정리](https://truth-exoplanet-99c.notion.site/WAS-5c5b65b57ed147669af6e05c81c44db3)
+
+## 2 웹 백엔드 프로그래밍 기초 - Web개발의 이해
+### JDK,이클립스 & 톰캣 설치
+- [노트정리](https://truth-exoplanet-99c.notion.site/ff2c1e5b03394bdaaba106b6537151fb)
+- [노트정리](https://truth-exoplanet-99c.notion.site/WAS-5c5b65b57ed147669af6e05c81c44db3)
+
+## 3 Servlet
+### Servlet이란?
+- [노트정리](https://truth-exoplanet-99c.notion.site/Servlet-c2d6d12cb2c6466aa73242330c63fc75)
+
+### Servlet 작성 방법
+- [노트정리](https://truth-exoplanet-99c.notion.site/Servlet-686220b2fa244aa7ae75cccd533dc8c0)
+
+### Servlet 라이프 싸이클
+- [노트정리](https://truth-exoplanet-99c.notion.site/Servlet-eb6e4d67a724469ebfaf95b8ce10ca28)
+
+### Request, Response 객체 이해하기
+- [노트정리](https://truth-exoplanet-99c.notion.site/Request-Response-afb991e002b3437cb3606e375a0c3239)
