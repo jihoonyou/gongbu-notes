@@ -48,3 +48,29 @@
 
 ### Request, Response 객체 이해하기
 - [노트정리](https://truth-exoplanet-99c.notion.site/Request-Response-afb991e002b3437cb3606e375a0c3239)
+
+## 4 JSP
+### JSP관련
+- [JSP란?](https://truth-exoplanet-99c.notion.site/JSP-68d6be5e0d9649ada108d470789f92a6)
+- [JSP 라이프싸이클](https://truth-exoplanet-99c.notion.site/JSP-b1a94e8c408f49039b671f291a48ecb7)
+- [JSP 문법](https://truth-exoplanet-99c.notion.site/JSP-9e5d5a84a8c94cd0bcbdf5c95a345a02)
+- [JSP 내장객체](https://truth-exoplanet-99c.notion.site/JSP-a8aacbbdfd9a4453a7c6f62b4842adbf)
+
+## 5 redirect & forward
+### redirect와 forward
+- [redirect & forward(+servlet & jsp 연동)](https://truth-exoplanet-99c.notion.site/redirect-forward-servlet-jsp-ba2967904d0448d7824fb0041bdbf7c0)
+
+## 6 Scope
+### Scope란
+- [Scope](https://truth-exoplanet-99c.notion.site/scope-3018855e2301472fa09d3561a5cb69d7)
+
+## 7 EL(Expression Language) & JSTL(JSP Standard Tag Library)
+### EL(Expression Language) & JSTL(JSP Standard Tag Library)
+- [EL(Expression Language) & JSTL(JSP Standard Tag Library)](https://truth-exoplanet-99c.notion.site/EL-Expression-Language-JSTL-JSP-Standard-Tag-Library-fea5d016603d4461aea6b1aa0ea22a34)
+
+## 1 SQL & JDBC 프로그래밍
+### MySQL
+- [MySQL](https://truth-exoplanet-99c.notion.site/MySQL-e2ddfa8c596f459fb96c6487196a4f05)
+
+### SQL
+- [SQL](https://truth-exoplanet-99c.notion.site/SQL-4674198aaba644ab92932daf1047cf84)
