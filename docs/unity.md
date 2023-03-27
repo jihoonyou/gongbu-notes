@@ -22,7 +22,7 @@
 - interface
   - default -> 2 by 3
   - Scene, Hierarchy, Inspector
-  - Game, Project, Console
+  - Game, Project, Console 
 - Unity는 하나의 게임 world를 scene단위로 단위
 - Scene: 작업화면을 보여주는 듯
 - Game: 실제 플레이어가 볼 화면 프리뷰 (Main Camera가 보고 있는 화면)
@@ -104,3 +104,121 @@
         - 게임 도중 새로 추가된 게임오브젝트도 자동실행
 - 유니티 이벤트 메서드: 이름만 맞춰 구현하면, 해당 타이밍에 자동 실행된다
 - 정리: 유니티의 모든 컴포넌트는 MonoBehaviour 기반, 컴포넌트는 메시지를 받을 수 있다, 메시지에 해당하는 기능을 가지고 있으면 실행한다, 이벤트 기반 메서드는 메시지를 통해 실행 되야할 타이밍에 자동 실행된다
+
+## 게임 제작: 소코반(창고지기)
+### 초기 씬 구성
+
+- window layout 2 by 3 (기본 세팅)
+- Material (shader + texture) -> 물체 색
+- Plane과 Player에는 Collider가 있어서 뚫리지 않고 부딫힘
+- default가 private
+- 코드상의 RigidBody를 Unity에서 연결해줘야함
+
+### 플레이어 동작
+
+- 유저입력을 받아서, 플레이어가 힘을 받도록 (keyboard가 누른순간에 체크 함수가 동작해야함)
+- 지속적으로 갱신을 받아야함 (update)
+- Focus가 게임패널에 가야 동작이 된다
+
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+    public float speed = 10f;
+    public Rigidbody playerRigidBody;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        playerRigidBody.AddForce(0, 1000, 0);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if(Input.GetKey(KeyCode.W))
+        {
+            playerRigidBody.AddForce(0, 0, speed);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            playerRigidBody.AddForce(-speed, 0, 0);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            playerRigidBody.AddForce(0, 0, -speed);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            playerRigidBody.AddForce(speed, 0, 0);
+        }
+    }
+
+        void Update()
+    {
+        float inputX = Input.GetAxis("Horizontal");
+        float inputZ = Input.GetAxis("Vertical");
+
+        playerRigidBody.AddForce(inputX * speed, 0, inputZ * speed);
+    }
+
+}
+
+
+public class Player : MonoBehaviour
+{
+    public float speed = 10f;
+    private Rigidbody playerRigidBody;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        // 특정 타입에 대해, Game Object를 뒤져서 가져온다
+        playerRigidBody = GetComponent<Rigidbody>();
+        playerRigidBody.AddForce(0, 1000, 0);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        float inputX = Input.GetAxis("Horizontal");
+        float inputZ = Input.GetAxis("Vertical");
+
+        // playerRigidBody.AddForce(inputX * speed, 0, inputZ * speed);
+
+        float fallSpeed = playerRigidBody.velocity.y;
+
+        Vector3 velocity = new Vector3(inputX, 0, inputZ);
+
+        // (inputX * speed, 0 * speed, inputZ * speed)
+        velocity = velocity * speed;
+
+        velocity.y = fallSpeed;
+
+        // (inputX * speed, fallSpeed, inputZ * speed)
+        playerRigidBody.velocity = velocity;
+    }
+}
+```
+- // 발사 기능 - "fire" - 마우스 오른쪽 버튼 (custom 구현 가능)
+- // 앉는 기능 - "Crunch" - 키보드 C
+- // 점프 기능 - "Jump - 키보드 스페이스
+- float inputX = Input.GetAxis("Horizontal");
+  - 키보드 수평방향에 대응되는 키가 맵핑되있음 <- A  -1.0   0   + 1.0   ->  D (조이스틱은 살짝 미는거 구현 가능)
+  - Edit/Project Settings/ Input Manager / Horizontal
+- AddForce는 관성이 붙음, velocity는 바로 적용 가능 (Vector3 사용 - 추후 설명)
+- GetComponent 사용
+
+### 레벨 디자인
+
+- cmd/ctrl 키 눌르면 grid 맞춰서 이동 가능
+- 맵만들 때 사용 키 (마우스 오른쪽, 스크롤 키)
+- 복사 cmd d
+- scale과 position 값 수정
+- Create Empty (이름지정: Level) Game Object 생성해서 hierarchy 정리
+- 옮기려는 박스의 경우, 사이 간격보다 작게 해야함
+- ItemBox에 RigidBody 설정
+- 카메라 각도 설정
