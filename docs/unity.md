@@ -222,3 +222,18 @@ public class Player : MonoBehaviour
 - 옮기려는 박스의 경우, 사이 간격보다 작게 해야함
 - ItemBox에 RigidBody 설정
 - 카메라 각도 설정
+- Rigidbody - Freeze Position, Freeze Rotation
+- 프리팹 만들기 (파일로서 미리 만드는 것) -> 재사용 가능한 게임 오브젝트 (Hierarchy에서 Asset으로 옮기기)
+- scene 왼쪽 상단
+  - pivot: 물체의 정해져있는 좌표의 기준 (default)
+  - center: 눈으로 보이는 기준
+  - global: 게임 세상을 기준으로 배치
+  - local: 물체의 회전을 기준으로 배치
+- Collider는 IsTrigger하면 물체의 충돌 감지하고, 물리적 표면이 사라짐
+  - 특정 지점 도착시, 연출가능 (눈에 보이지않는 IsTrigger Collider 생성)
+- 프리펩은 설정바꿔서 전체 apply 할 수 있다
+
+### 오브젝트 회전 + 시간 간격
+- 모든 게임 오브젝트는 transform component를 무조건 가지고 있음 (transform <- 사용 가능)
+- Update함수 사용할 때, 시간 간격을 기준으로 작동하도록 (1초에 깜빡이는 횟수를 나누기 ) =
+  - Time.deltaTime = 한 프레임의 시간 (화면을 60번 깜빡이면 초당 60프레임) 1/ 60, (화면을 200번 깜빡이면 200프레임) 1/ 200
