@@ -237,3 +237,111 @@ public class Player : MonoBehaviour
 - 모든 게임 오브젝트는 transform component를 무조건 가지고 있음 (transform <- 사용 가능)
 - Update함수 사용할 때, 시간 간격을 기준으로 작동하도록 (1초에 깜빡이는 횟수를 나누기 ) =
   - Time.deltaTime = 한 프레임의 시간 (화면을 60번 깜빡이면 초당 60프레임) 1/ 60, (화면을 200번 깜빡이면 200프레임) 1/ 200
+
+### 충돌처리
+- tag (game object를 분류하는 방법)
+  - EndPoint 태그 추가
+  - Add Component
+- 충돌감지를 위해서는 OnTriggerEnter,OnCollisionEnter,OnTriggerExit,OnTriggerStay ...
+-> unity가 자동으로 발동시켜주는 함수
+```
+void OnTriggerEnter(Collider other)
+{
+    if(other.tag == "EndPoint)
+    {
+        // do something
+    }
+}
+// trigger와 collider가 부딫친다면
+```
+- Trigger인 클라이더와 충동할 때 자동으로 실행
+- tag로 충돌대상 필터링 가능
+
+
+```
+void OnCollisionEnter(Colllider other)
+{
+
+}
+```
+- 일반 콜리이더와 충동했을 때 자동으로 실행
+
+Mesh Renderer
+```
+private Renderer myRenderer;
+
+private MyColor originalColor;
+
+void Start()
+{
+    myRenderer = GetCOmponent<Renderer>();
+    originalColor = myRendeer.
+}
+```
+- `myRenderer.material.color = Color.red;`로 material 접근 가능
+
+### 게임 매니저와 승리 조건
+- 다른 Object에 isOverapped 추가
+  - (script)에서 추rkehla
+- Create Empty -> GameManager
+- size 정하고 drag and drop
+
+```
+GameManager
+public ItemBox itemBoxes;
+public bool isGameOver;
+
+void Start ()
+{
+    isGameOver = false;
+}
+
+void Update ()
+{
+    if(isGameOver == true)
+    {
+        return;
+    }
+
+    int count = 0;
+    for( int i = 0; i < 3; i++)
+    {
+        if(itemBoxes[i].isOveraped == true)
+        {
+            count++;           
+        }
+    }
+    if(count <= 3)
+    {
+        isGameOver = true;
+    }
+}
+```
+
+### 승리 UI 추가
+- UI/Text 생성 (Hierarchy)
+  - EventSystem (자동으로 유저입력입력을 UI에게 전달)
+  - Canvas = 게임 패널의 크기 
+    - 2D 모드 클릭하여 작업 가능 (Rect Transform - 사각형 영역에서의 transform)
+    - Anchor Preset + Alt키
+```
+public GameObject winUI
+winUI.SetActive(true);
+```
+
+- File/Build Seeting
+  - Scenes In Build에 Main 추가
+```
+using UnitiyEngine.SceneManagement;
+
+void Update ()
+{
+    if(Input.GetKeyDown(KeyCode.Space))
+    {
+        //SceneManager.LoadScene("Main");
+        SceneManager.LoadScene(0);
+    }
+}
+```
+- 재시작 기능
+
