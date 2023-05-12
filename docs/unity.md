@@ -345,3 +345,59 @@ void Update ()
 ```
 - 재시작 기능
 
+### 최종 빌드
+- Add Component (Audio Source)
+- 끝날 때 Player 못 움직이게
+  - GameManager 오브젝트 가져와서, 조건 확인하고 Update에서 early return
+
+- Build And Run으로 저장 (프로젝트의 경로에 저장하지 않기)
+
+### 평행이동과 좌표게
+```
+Vector3 targetPosition = new Vector3(1,0,0);
+transform.position = targetPosition;
+
+transform.Translate(targetPosition);
+``` 
+- transform은 해당 object의 transform
+
+`transform.Translate(move * Time.deltaTime, Space.World or Space.Self)`
+- local space - 부모와 나 (상대적) -> 자신의 기준으로
+- global space - 게임계와 나 (절대적) -> 게임세상을 기준으로
+- localPosition/position..
+
+### 회전가 쿼터니언
+- 90도 회전하면... gimbal_lock
+  - Quaternion이 필요
+```
+Qutaernion.Euler(new Vector3(30,45,60))
+
+Vector3 direction = targetTransform.position - trnasform.position;
+
+Quaternion targetRotation = Quarternion.LookRotation(direction);
+
+transform.rotation = targetRotation;
+
+```
+- z축이 앞면
+- Lerp는 중간지대 Quaternion.Lerp(aRotation,bRoation,0.5f)
+- 쿼터니언을 vector로 쿼터니언.eulerAngles;
+
+### 인스턴스화
+- 미리 만들어진 게임 오브젝트를 게임 도중에 필요한만큼 찍어내는 것
+  - Instantiate에 타겟 넘겨서 (target,위치,회전)
+- 프리펩을 등록해놓고 생성 (총알, 몬스터, etc...)
+
+### 코루틴
+- 처리와 처리사이에 대기시간 삽입, 여러처리를 동시에 병렬처리
+- fade-in, fade-out 구현할 때
+- async
+- coroutine 함수 넣으면 성능이 더 좋음, string으로 넣으면, 중간에 stop 가능
+- yield null값은 1frame
+
+### 레이 케스트
+- 물체에서 나온 광선이 닿는 곳이 있는지 확인 가능
+- DrawRay로 광선 확인 가능
+- RaycastHit
+
+ 
