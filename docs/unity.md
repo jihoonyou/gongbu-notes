@@ -4,12 +4,9 @@
 - 사이드 프로젝트를 위한 유니티 공부
 
 ## 공부자료
-- 튜토리얼
-- [] [2D 튜토리얼](https://www.youtube.com/playlist?list=PLctzObGsrjfxSys0Tdq9vPl_YGVYSI337)
-- [] [유니티 UNet](https://www.youtube.com/playlist?list=PLctzObGsrjfxQ6A8KX1heuQaNkL5xMA2D)
-- [] [유니티 포톤](https://www.youtube.com/playlist?list=PLctzObGsrjfwF7kkoraWb235U8Z602gx1)
 - 강의
-- [] [retr0의 유니티](https://www.udemy.com/course/retr0-unity/)
+- [x] [retr0의 유니티](https://www.udemy.com/course/retr0-unity/)
+- [ ] [인프런](https://www.inflearn.com/course/mmorpg-%EC%9C%A0%EB%8B%88%ED%8B%B0)
 
 ## 유니티 준비하기
 ### 유니티 허브와 유니티 데이터 설치
